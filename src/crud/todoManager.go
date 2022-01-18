@@ -50,12 +50,14 @@ func (t *TodoManager) Update(todo models.Todo) error {
 	return ErrTodoNotFound
 }
 
-func (t *TodoManager) DeleteById(id int) {
+func (t *TodoManager) DeleteById(id int) error {
 	index := -1
 	for key, value := range t.Todos {
 		if value.Id == id {
 			index = key
+			return nil
 		}
 	}
 	t.Todos = append(t.Todos[:index], t.Todos[index+1:]...)
+	return nil
 }
