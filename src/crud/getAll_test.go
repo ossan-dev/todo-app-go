@@ -7,20 +7,12 @@ import (
 	"todo-app-go.com/v1/src/models"
 )
 
-func assertCollectionsEqual(t *testing.T, got, want []models.Todo) {
-	t.Helper()
-
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %v but want %v", got, want)
-	}
-}
-
 func TestGetAll(t *testing.T) {
 	t.Run("GetAllTodos should return all the todos added", func(t *testing.T) {
 		todos := []models.Todo{
-			{1, "FirstTodo", false},
-			{2, "SecondTodo", false},
-			{3, "ThirdTodo", false},
+			{Id: 1, Description: "FirstTodo", IsCompleted: false},
+			{Id: 2, Description: "SecondTodo", IsCompleted: false},
+			{Id: 3, Description: "ThirdTodo", IsCompleted: false},
 		}
 
 		todoManager := &TodoManager{todos}
@@ -35,4 +27,12 @@ func TestGetAll(t *testing.T) {
 
 		assertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
 	})
+}
+
+func assertCollectionsEqual(t *testing.T, got, want []models.Todo) {
+	t.Helper()
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v but want %v", got, want)
+	}
 }

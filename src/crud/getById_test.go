@@ -9,9 +9,9 @@ import (
 
 func TestGetById(t *testing.T) {
 	todos := []models.Todo{
-		{1, "FirstTodo", false},
-		{2, "SecondTodo", false},
-		{3, "ThirdTodo", false},
+		{Id: 1, Description: "FirstTodo", IsCompleted: false},
+		{Id: 2, Description: "SecondTodo", IsCompleted: false},
+		{Id: 3, Description: "ThirdTodo", IsCompleted: false},
 	}
 
 	todoManager := &TodoManager{todos}
