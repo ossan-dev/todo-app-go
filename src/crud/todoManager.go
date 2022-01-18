@@ -35,4 +35,6 @@ func (t *TodoManager) GetByStatus(completedStatus bool) []models.Todo {
 	return result
 }
 
-func (t *TodoManager) Add(models.Todo) {}
+func (t *TodoManager) Add(todo models.Todo) {
+	t.Todos = append(t.Todos, todo)
+}
