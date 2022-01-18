@@ -36,5 +36,6 @@ func (t *TodoManager) GetByStatus(completedStatus bool) []models.Todo {
 }
 
 func (t *TodoManager) Add(todo models.Todo) {
+	// TODO: add validation logic & tests
 	t.Todos = append(t.Todos, todo)
 }
