@@ -1,4 +1,4 @@
-package test
+package crud
 
 import (
 	"reflect"
@@ -23,7 +23,7 @@ func TestGetAll(t *testing.T) {
 			{3, "ThirdTodo", false},
 		}
 
-		todoManager := &models.TodoManager{todos}
+		todoManager := &TodoManager{todos}
 
 		assertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
 	})
@@ -31,7 +31,7 @@ func TestGetAll(t *testing.T) {
 	t.Run("GetAllTodos should return [] when no todos are present", func(t *testing.T) {
 		todos := []models.Todo{}
 
-		todoManager := &models.TodoManager{todos}
+		todoManager := &TodoManager{todos}
 
 		assertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
 	})
