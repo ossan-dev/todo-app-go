@@ -49,3 +49,6 @@ func (t *TodoManager) Update(todo models.Todo) error {
 	}
 	return ErrTodoNotFound
 }
+
+func (t *TodoManager) DeleteById(id int) {
+}
