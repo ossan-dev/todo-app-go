@@ -16,9 +16,9 @@ func TestDelete(t *testing.T) {
 
 	todoManager := &TodoManager{todos}
 
-	todoManager.DeleteById(1)
+	todoManager.DeleteById(2)
 
-	_, err := todoManager.GetById(1)
+	_, err := todoManager.GetById(2)
 
 	utils.AssertError(t, err, ErrTodoNotFound)
 }

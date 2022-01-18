@@ -51,5 +51,11 @@ func (t *TodoManager) Update(todo models.Todo) error {
 }
 
 func (t *TodoManager) DeleteById(id int) {
-	t.Todos = append(t.Todos[:0], t.Todos[1:]...)
+	index := -1
+	for key, value := range t.Todos {
+		if value.Id == id {
+			index = key
+		}
+	}
+	t.Todos = append(t.Todos[:index], t.Todos[index+1:]...)
 }
