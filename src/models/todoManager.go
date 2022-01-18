@@ -5,5 +5,5 @@ type TodoManager struct {
 }
 
 func (t *TodoManager) GetAllTodos() []Todo {
-	return nil
+	return t.Todos
 }
