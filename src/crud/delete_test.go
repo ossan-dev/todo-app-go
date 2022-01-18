@@ -16,9 +16,14 @@ func TestDelete(t *testing.T) {
 
 	todoManager := &TodoManager{todos}
 
-	todoManager.DeleteById(2)
+	t.Run("delete todo", func(t *testing.T) {
+		todoManager.DeleteById(2)
+		_, err := todoManager.GetById(2)
+		utils.AssertError(t, err, ErrTodoNotFound)
+	})
 
-	_, err := todoManager.GetById(2)
-
-	utils.AssertError(t, err, ErrTodoNotFound)
+	t.Run("not delete todo if not exists", func(t *testing.T) {
+		err := todoManager.DeleteById(4)
+		utils.AssertError(t, err, ErrTodoNotFound)
+	})
 }
