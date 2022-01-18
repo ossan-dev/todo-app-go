@@ -34,3 +34,5 @@ func (t *TodoManager) GetByStatus(completedStatus bool) []models.Todo {
 	}
 	return result
 }
+
+func (t *TodoManager) Add(models.Todo) {}
