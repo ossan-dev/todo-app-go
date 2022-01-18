@@ -51,4 +51,5 @@ func (t *TodoManager) Update(todo models.Todo) error {
 }
 
 func (t *TodoManager) DeleteById(id int) {
+	t.Todos = append(t.Todos[:0], t.Todos[1:]...)
 }
