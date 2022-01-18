@@ -41,4 +41,5 @@ func (t *TodoManager) Add(todo models.Todo) {
 }
 
 func (t *TodoManager) Update(todo models.Todo) {
+	t.Todos[1] = todo
 }
