@@ -1,15 +1,19 @@
 package test
 
-import "testing"
+import (
+	"testing"
+
+	"todo-app-go.com/v1/src/models"
+)
 
 func TestGetAll(t *testing.T) {
-	todos := []Todo{
+	todos := []models.Todo{
 		{1, "FirstTodo", false},
 		{2, "SecondTodo", false},
 		{3, "ThirdTodo", false},
 	}
 
-	todoManager := &TodoManager{todos}
+	todoManager := &models.TodoManager{todos}
 
 	got := todoManager.GetAllTodos()
 
