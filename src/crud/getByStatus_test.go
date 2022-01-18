@@ -19,7 +19,7 @@ func TestGetByStatus(t *testing.T) {
 	got := todoManager.GetByStatus(true)
 	want := todos[2:]
 
-	if reflect.DeepEqual(got, want) {
+	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v but want %v", got, want)
 	}
 }

@@ -24,3 +24,7 @@ func (t *TodoManager) GetById(id int) (*models.Todo, error) {
 	}
 	return nil, ErrTodoNotFound
 }
+
+func (t *TodoManager) GetByStatus(completedStatus bool) []models.Todo {
+	return nil
+}
