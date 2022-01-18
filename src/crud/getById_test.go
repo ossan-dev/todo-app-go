@@ -16,9 +16,13 @@ func TestGetById(t *testing.T) {
 
 	todoManager := &TodoManager{todos}
 
-	id := 1
-	got := todoManager.GetById(id)
-	want := todos[id-1]
+	t.Run("todo present in collection", func(t *testing.T) {
+		assertTodosEqual(t, todoManager.GetById(1), todos[0])
+	})
+}
+
+func assertTodosEqual(t *testing.T, got, want models.Todo) {
+	t.Helper()
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v but want %v", got, want)

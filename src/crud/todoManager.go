@@ -11,5 +11,10 @@ func (t *TodoManager) GetAllTodos() []models.Todo {
 }
 
 func (t *TodoManager) GetById(id int) models.Todo {
-	return t.Todos[id-1]
+	for _, todo := range t.Todos {
+		if todo.Id == id {
+			return todo
+		}
+	}
+	return models.Todo{}
 }
