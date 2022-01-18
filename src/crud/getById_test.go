@@ -19,6 +19,13 @@ func TestGetById(t *testing.T) {
 	t.Run("todo present in collection", func(t *testing.T) {
 		assertTodosEqual(t, todoManager.GetById(1), todos[0])
 	})
+
+	t.Run("todo not present in collection", func(t *testing.T) {
+		_, err := todoManager.GetById(4)
+		if err != nil {
+			t.Errorf("expected an error but didn't find one")
+		}
+	})
 }
 
 func assertTodosEqual(t *testing.T, got, want models.Todo) {
