@@ -55,9 +55,13 @@ func (t *TodoManager) DeleteById(id int) error {
 	for key, value := range t.Todos {
 		if value.Id == id {
 			index = key
-			return nil
 		}
 	}
+
+	if index < 0 {
+		return ErrTodoNotFound
+	}
+
 	t.Todos = append(t.Todos[:index], t.Todos[index+1:]...)
 	return nil
 }
