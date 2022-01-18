@@ -27,7 +27,7 @@ func TestUpdate(t *testing.T) {
 	})
 
 	t.Run("update not existing todo", func(t *testing.T) {
-		todoUpdated := models.NewTodo(2, "Updated text", false)
+		todoUpdated := models.NewTodo(4, "Updated text", false)
 		err := todoManager.Update(todoUpdated)
 
 		utils.AssertError(t, err, ErrTodoNotFound)
