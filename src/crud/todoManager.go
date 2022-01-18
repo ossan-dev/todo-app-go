@@ -39,3 +39,6 @@ func (t *TodoManager) Add(todo models.Todo) {
 	// TODO: add validation logic & tests
 	t.Todos = append(t.Todos, todo)
 }
+
+func (t *TodoManager) Update(todo models.Todo) {
+}
