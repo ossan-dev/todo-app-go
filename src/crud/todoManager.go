@@ -9,3 +9,7 @@ type TodoManager struct {
 func (t *TodoManager) GetAllTodos() []models.Todo {
 	return t.Todos
 }
+
+func (t *TodoManager) GetById(id int) models.Todo {
+	return t.Todos[id-1]
+}
