@@ -26,5 +26,7 @@ func (t *TodoManager) GetById(id int) (*models.Todo, error) {
 }
 
 func (t *TodoManager) GetByStatus(completedStatus bool) []models.Todo {
-	return nil
+	return []models.Todo{
+		{Id: t.Todos[2].Id, Description: t.Todos[2].Description, IsCompleted: t.Todos[2].IsCompleted},
+	}
 }
