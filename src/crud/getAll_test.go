@@ -1,10 +1,10 @@
 package crud
 
 import (
-	"reflect"
 	"testing"
 
 	"todo-app-go.com/v1/src/models"
+	"todo-app-go.com/v1/src/utils"
 )
 
 func TestGetAll(t *testing.T) {
@@ -17,7 +17,7 @@ func TestGetAll(t *testing.T) {
 
 		todoManager := &TodoManager{todos}
 
-		assertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
+		utils.AssertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
 	})
 
 	t.Run("GetAllTodos should return [] when no todos are present", func(t *testing.T) {
@@ -25,14 +25,6 @@ func TestGetAll(t *testing.T) {
 
 		todoManager := &TodoManager{todos}
 
-		assertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
+		utils.AssertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
 	})
-}
-
-func assertCollectionsEqual(t *testing.T, got, want []models.Todo) {
-	t.Helper()
-
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %v but want %v", got, want)
-	}
 }
