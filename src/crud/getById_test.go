@@ -17,21 +17,43 @@ func TestGetById(t *testing.T) {
 	todoManager := &TodoManager{todos}
 
 	t.Run("todo present in collection", func(t *testing.T) {
-		assertTodosEqual(t, todoManager.GetById(1), todos[0])
+		got, err := todoManager.GetById(1)
+
+		assertTodosEqual(t, got, &todos[0])
+		assertNoError(t, err)
 	})
 
 	t.Run("todo not present in collection", func(t *testing.T) {
-		_, err := todoManager.GetById(4)
-		if err != nil {
-			t.Errorf("expected an error but didn't find one")
-		}
+		got, err := todoManager.GetById(4)
+
+		assertTodosEqual(t, got, nil)
+		assertError(t, err, ErrTodoNotFound)
 	})
 }
 
-func assertTodosEqual(t *testing.T, got, want models.Todo) {
+func assertTodosEqual(t *testing.T, got, want *models.Todo) {
 	t.Helper()
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v but want %v", got, want)
+	}
+}
+
+func assertError(t *testing.T, got, want error) {
+	t.Helper()
+	if got == nil {
+		t.Fatal("expected an error but didn't find one")
+	}
+
+	if got.Error() != want.Error() {
+		t.Errorf("got %q but want %q", got, want)
+	}
+}
+
+func assertNoError(t *testing.T, got error) {
+	t.Helper()
+
+	if got != nil {
+		t.Errorf("got an error but didn't want one")
 	}
 }
