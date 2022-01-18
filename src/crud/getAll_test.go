@@ -10,9 +10,9 @@ import (
 func TestGetAll(t *testing.T) {
 	t.Run("GetAllTodos should return all the todos added", func(t *testing.T) {
 		todos := []models.Todo{
-			{Id: 1, Description: "FirstTodo", IsCompleted: false},
-			{Id: 2, Description: "SecondTodo", IsCompleted: false},
-			{Id: 3, Description: "ThirdTodo", IsCompleted: false},
+			models.NewTodo(1, "FirstTodo", false),
+			models.NewTodo(2, "SecondTodo", false),
+			models.NewTodo(3, "ThirdTodo", true),
 		}
 
 		todoManager := &TodoManager{todos}

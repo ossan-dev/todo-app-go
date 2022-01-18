@@ -10,25 +10,25 @@ import (
 func TestGetByStatus(t *testing.T) {
 	t.Run("get completed todos return non-empty collections", func(t *testing.T) {
 		todos := []models.Todo{
-			{Id: 1, Description: "FirstTodo", IsCompleted: false},
-			{Id: 3, Description: "ThirdTodo", IsCompleted: true},
-			{Id: 2, Description: "SecondTodo", IsCompleted: false},
+			models.NewTodo(1, "FirstTodo", false),
+			models.NewTodo(2, "SecondTodo", false),
+			models.NewTodo(3, "ThirdTodo", true),
 		}
 
 		todoManager := &TodoManager{todos}
 
 		got := todoManager.GetByStatus(true)
 		want := []models.Todo{
-			{Id: 3, Description: "ThirdTodo", IsCompleted: true},
+			models.NewTodo(3, "ThirdTodo", true),
 		}
 		utils.AssertCollectionsEqual(t, got, want)
 	})
 
 	t.Run("get completed todos return empty collections", func(t *testing.T) {
 		todos := []models.Todo{
-			{Id: 1, Description: "FirstTodo", IsCompleted: false},
-			{Id: 3, Description: "ThirdTodo", IsCompleted: false},
-			{Id: 2, Description: "SecondTodo", IsCompleted: false},
+			models.NewTodo(1, "FirstTodo", false),
+			models.NewTodo(2, "SecondTodo", false),
+			models.NewTodo(3, "ThirdTodo", false),
 		}
 
 		todoManager := &TodoManager{todos}
