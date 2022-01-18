@@ -40,10 +40,11 @@ func (t *TodoManager) Add(todo models.Todo) {
 	t.Todos = append(t.Todos, todo)
 }
 
-func (t *TodoManager) Update(todo models.Todo) {
+func (t *TodoManager) Update(todo models.Todo) error {
 	for key, value := range t.Todos {
 		if value.Id == todo.Id {
 			t.Todos[key] = todo
 		}
 	}
+	return nil
 }
