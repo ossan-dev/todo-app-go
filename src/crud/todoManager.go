@@ -26,7 +26,11 @@ func (t *TodoManager) GetById(id int) (*models.Todo, error) {
 }
 
 func (t *TodoManager) GetByStatus(completedStatus bool) []models.Todo {
-	return []models.Todo{
-		{Id: t.Todos[2].Id, Description: t.Todos[2].Description, IsCompleted: t.Todos[2].IsCompleted},
+	result := make([]models.Todo, 0)
+	for _, todo := range t.Todos {
+		if todo.IsCompleted == completedStatus {
+			result = append(result, todo)
+		}
 	}
+	return result
 }
