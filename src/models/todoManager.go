@@ -7,3 +7,7 @@ type TodoManager struct {
 func (t *TodoManager) GetAllTodos() []Todo {
 	return t.Todos
 }
+
+func (t *TodoManager) GetById(id int) Todo {
+	return Todo{}
+}
