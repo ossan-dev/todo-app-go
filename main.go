@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	server := &crud.TodoServer{&crud.InMemoryTodoStore{}}
+	server := &crud.TodoServer{crud.NewInMemoryTodoStore()}
 
 	if err := http.ListenAndServe(":5000", server); err != nil {
 		log.Fatalf("could not listen on port 5000 %v", err)
