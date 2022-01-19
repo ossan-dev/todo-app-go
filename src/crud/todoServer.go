@@ -13,8 +13,14 @@ type TodoServer struct {
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/todos/"))
-	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprintf(w, "%v", t.Store.GetTodoById(id))
+
+	todo := t.Store.GetTodoById(id)
+
+	if todo == "" {
+		w.WriteHeader(http.StatusNotFound)
+	}
+
+	fmt.Fprintf(w, todo)
 }
 
 // func GetTodoById(id int) string {
