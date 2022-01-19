@@ -5,12 +5,13 @@ import (
 	"net/http"
 
 	"todo-app-go.com/v1/src/crud"
+	"todo-app-go.com/v1/src/models"
 )
 
 type InMemoryTodoStore struct{}
 
-func (i *InMemoryTodoStore) GetTodoById(id int) string {
-	return `{"id": 1, "description": "FirstTodo", "isCompleted": false}`
+func (i *InMemoryTodoStore) GetTodoById(id int) *models.Todo {
+	return &models.Todo{1, "FirstTodo", false}
 }
 
 func main() {

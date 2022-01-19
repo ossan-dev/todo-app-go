@@ -8,6 +8,10 @@ import (
 
 var ErrTodoNotFound = errors.New("todo not found in collection")
 
+type TodoStore interface {
+	GetTodoById(id int) string
+}
+
 type TodoManager struct {
 	Todos []models.Todo
 }
@@ -16,13 +20,16 @@ func (t *TodoManager) GetAllTodos() []models.Todo {
 	return t.Todos
 }
 
-func (t *TodoManager) GetById(id int) (*models.Todo, error) {
-	for _, todo := range t.Todos {
-		if todo.Id == id {
-			return &todo, nil
-		}
+func GetTodoById(id int) models.Todo {
+	if id == 1 {
+		return models.Todo{1, "FirstTodo", false}
 	}
-	return nil, ErrTodoNotFound
+
+	if id == 2 {
+		return models.Todo{2, "SecondTodo", false}
+	}
+
+	return models.Todo{}
 }
 
 func (t *TodoManager) GetByStatus(completedStatus bool) []models.Todo {

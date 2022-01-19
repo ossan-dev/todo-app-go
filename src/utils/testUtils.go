@@ -7,7 +7,7 @@ import (
 	"todo-app-go.com/v1/src/models"
 )
 
-func AssertTodosEqual(t *testing.T, got, want *models.Todo) {
+func AssertTodosEqual(t *testing.T, got, want models.Todo) {
 	t.Helper()
 
 	if !reflect.DeepEqual(got, want) {

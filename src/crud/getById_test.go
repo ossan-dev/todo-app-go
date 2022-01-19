@@ -11,43 +11,33 @@ import (
 )
 
 func TestGetById(t *testing.T) {
-	todos := []models.Todo{
-		models.NewTodo(1, "FirstTodo", false),
-		models.NewTodo(2, "SecondTodo", false),
-		models.NewTodo(3, "ThirdTodo", true),
+	store := StubTodoStore{
+		map[int]models.Todo{
+			1: models.NewTodo(1, "FirstTodo", false),
+			2: models.NewTodo(2, "SecondTodo", false),
+		},
 	}
 
-	todoManager := &TodoManager{todos}
-
 	t.Run("todo present in collection", func(t *testing.T) {
-		got, err := todoManager.GetById(1)
+		got := store.GetTodoById(1)
 
-		utils.AssertTodosEqual(t, got, &todos[0])
-		utils.AssertNoError(t, err)
+		utils.AssertResponseBody(t, got, store.todos[1].Description)
+		// utils.AssertNoError(t, err)
 	})
 
-	t.Run("todo not present in collection", func(t *testing.T) {
-		got, err := todoManager.GetById(4)
+	// t.Run("todo not present in collection", func(t *testing.T) {
+	// 	got, err := store.GetTodoById(4)
 
-		utils.AssertTodosEqual(t, got, nil)
-		utils.AssertError(t, err, ErrTodoNotFound)
-	})
-}
-
-type StubTodoStore struct {
-	todos map[int]string
-}
-
-func (s *StubTodoStore) GetTodoById(id int) string {
-	todo := s.todos[id]
-	return todo
+	// 	utils.AssertTodosEqual(t, got, nil)
+	// 	utils.AssertError(t, err, ErrTodoNotFound)
+	// })
 }
 
 func TestGetByIdEndpoint(t *testing.T) {
 	store := StubTodoStore{
-		map[int]string{
-			1: `{"id": 1, "description": "FirstTodo", "isCompleted": false}`,
-			2: `{"id": 2, "description": "SecondTodo", "isCompleted": true}`,
+		map[int]models.Todo{
+			1: models.NewTodo(1, "FirstTodo", false),
+			2: models.NewTodo(2, "SecondTodo", false),
 		},
 	}
 	server := &TodoServer{&store}
@@ -58,7 +48,7 @@ func TestGetByIdEndpoint(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
-		utils.AssertResponseBody(t, response.Body.String(), `{"id": 1, "description": "FirstTodo", "isCompleted": false}`)
+		utils.AssertResponseBody(t, response.Body.String(), store.todos[1].Description)
 	})
 
 	t.Run("second todo", func(t *testing.T) {
@@ -67,7 +57,7 @@ func TestGetByIdEndpoint(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
-		utils.AssertResponseBody(t, response.Body.String(), `{"id": 2, "description": "SecondTodo", "isCompleted": true}`)
+		utils.AssertResponseBody(t, response.Body.String(), store.todos[2].Description)
 	})
 }
 
