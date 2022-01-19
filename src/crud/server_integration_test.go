@@ -9,8 +9,8 @@ import (
 )
 
 func TestSavingTodosAndRetrievingThem(t *testing.T) {
-	store := InMemoryTodoStore{}
-	server := TodoServer{&store}
+	store := NewInMemoryTodoStore()
+	server := TodoServer{store}
 	todo := "Example"
 
 	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(todo))
@@ -20,6 +20,15 @@ func TestSavingTodosAndRetrievingThem(t *testing.T) {
 	response := httptest.NewRecorder()
 	server.ServeHTTP(response, newGetToDoByIdReq(1))
 	utils.AssertStatusCode(t, response.Code, http.StatusOK)
+	utils.AssertResponseBody(t, response.Body.String(), "Example")
 
+	response = httptest.NewRecorder()
+	server.ServeHTTP(response, newGetToDoByIdReq(2))
+	utils.AssertStatusCode(t, response.Code, http.StatusOK)
+	utils.AssertResponseBody(t, response.Body.String(), "Example")
+
+	response = httptest.NewRecorder()
+	server.ServeHTTP(response, newGetToDoByIdReq(3))
+	utils.AssertStatusCode(t, response.Code, http.StatusOK)
 	utils.AssertResponseBody(t, response.Body.String(), "Example")
 }
