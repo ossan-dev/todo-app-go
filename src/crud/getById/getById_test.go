@@ -1,4 +1,4 @@
-package crud
+package getbyid
 
 import (
 	"fmt"
@@ -6,12 +6,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"todo-app-go.com/v1/src/crud/servers"
+	"todo-app-go.com/v1/src/crud/stubs"
 	"todo-app-go.com/v1/src/models"
 	"todo-app-go.com/v1/src/utils"
 )
 
 func TestGetById(t *testing.T) {
-	store := StubTodoStore{
+	store := stubs.StubTodoStore{
 		map[int]models.Todo{
 			1: models.NewTodo(1, "FirstTodo", false),
 			2: models.NewTodo(2, "SecondTodo", false),
@@ -21,7 +23,7 @@ func TestGetById(t *testing.T) {
 	t.Run("todo present in collection", func(t *testing.T) {
 		got := store.GetTodoById(1)
 
-		utils.AssertResponseBody(t, got, store.todos[1].Description)
+		utils.AssertResponseBody(t, got, "FirstTodo")
 		// utils.AssertNoError(t, err)
 	})
 
@@ -34,13 +36,13 @@ func TestGetById(t *testing.T) {
 }
 
 func TestGetByIdEndpoint(t *testing.T) {
-	store := StubTodoStore{
+	store := stubs.StubTodoStore{
 		map[int]models.Todo{
 			1: models.NewTodo(1, "FirstTodo", false),
 			2: models.NewTodo(2, "SecondTodo", false),
 		},
 	}
-	server := &TodoServer{&store}
+	server := servers.NewTodoServer(&store)
 
 	t.Run("first todo", func(t *testing.T) {
 		request := newGetToDoByIdReq(1)
@@ -49,7 +51,7 @@ func TestGetByIdEndpoint(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		utils.AssertStatusCode(t, response.Code, http.StatusOK)
-		utils.AssertResponseBody(t, response.Body.String(), store.todos[1].Description)
+		utils.AssertResponseBody(t, response.Body.String(), "FirstTodo")
 	})
 
 	t.Run("second todo", func(t *testing.T) {
@@ -59,7 +61,7 @@ func TestGetByIdEndpoint(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		utils.AssertStatusCode(t, response.Code, http.StatusOK)
-		utils.AssertResponseBody(t, response.Body.String(), store.todos[2].Description)
+		utils.AssertResponseBody(t, response.Body.String(), "SecondTodo")
 	})
 
 	t.Run("returns 404 on missing todos", func(t *testing.T) {

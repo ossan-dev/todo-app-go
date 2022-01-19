@@ -1,4 +1,4 @@
-package crud
+package servers
 
 import (
 	"fmt"
@@ -6,10 +6,16 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
+	"todo-app-go.com/v1/src/crud/interfaces"
 )
 
 type TodoServer struct {
-	Store TodoStore
+	store interfaces.TodoStore
+}
+
+func NewTodoServer(todoStore interfaces.TodoStore) *TodoServer {
+	return &TodoServer{todoStore}
 }
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +29,7 @@ func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
-	todo := t.Store.GetTodoById(todoId)
+	todo := t.store.GetTodoById(todoId)
 
 	if todo == "" {
 		w.WriteHeader(http.StatusNotFound)
@@ -35,5 +41,5 @@ func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
 func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	t.Store.AddTodo(string(reqBody))
+	t.store.AddTodo(string(reqBody))
 }
