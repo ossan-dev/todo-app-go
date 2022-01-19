@@ -1,6 +1,10 @@
 package stubs
 
-import "todo-app-go.com/v1/src/models"
+import (
+	"errors"
+
+	"todo-app-go.com/v1/src/models"
+)
 
 type StubTodoStore struct {
 	todos map[int]models.Todo
@@ -11,8 +15,11 @@ func NewStubTodoStore(todos *map[int]models.Todo) *StubTodoStore {
 }
 
 func (s *StubTodoStore) GetTodoById(id int) (string, error) {
-	todo := s.todos[id]
-	return todo.Description, nil
+	if val, ok := s.todos[id]; ok {
+		todo := val
+		return todo.Description, nil
+	}
+	return "", errors.New("todo not found")
 }
 
 func (s *StubTodoStore) AddTodo(description string) {
