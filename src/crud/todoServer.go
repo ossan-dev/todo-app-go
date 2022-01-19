@@ -6,5 +6,5 @@ import (
 )
 
 func TodoServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, `[{"id": 1, "description": "FirstTodo", "isCompleted": false}]`)
+	fmt.Fprintf(w, `{"id": 1, "description": "FirstTodo", "isCompleted": false}`)
 }
