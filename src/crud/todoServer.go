@@ -8,12 +8,12 @@ import (
 )
 
 type TodoServer struct {
-	store TodoStore
+	Store TodoStore
 }
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/todos/"))
-	fmt.Fprintf(w, t.store.GetTodoById(id))
+	fmt.Fprintf(w, t.Store.GetTodoById(id))
 }
 
 type TodoStore interface {

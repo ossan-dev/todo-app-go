@@ -1,8 +1,6 @@
 package crud
 
 import (
-	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"todo-app-go.com/v1/src/models"
@@ -31,18 +29,20 @@ func TestGetAll(t *testing.T) {
 	})
 }
 
-func TestGetAllEndpoint(t *testing.T) {
-	t.Run("returns todos", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "api/todos", nil)
-		response := httptest.NewRecorder()
+// func TestGetAllEndpoint(t *testing.T) {
+// 	server := &TodoServer{}
 
-		TodoServer(response, request)
+// 	t.Run("returns todos", func(t *testing.T) {
+// 		request, _ := http.NewRequest(http.MethodGet, "api/todos", nil)
+// 		response := httptest.NewRecorder()
 
-		got := response.Body.String()
-		want := `[{"id": 1, "description": "FirstTodo", "isCompleted": false}]`
+// 		server.ServeHTTP(response, request)
 
-		if got != want {
-			t.Errorf("got %q but want %q", got, want)
-		}
-	})
-}
+// 		got := response.Body.String()
+// 		want := `[{"id": 1, "description": "FirstTodo", "isCompleted": false}]`
+
+// 		if got != want {
+// 			t.Errorf("got %q but want %q", got, want)
+// 		}
+// 	})
+// }

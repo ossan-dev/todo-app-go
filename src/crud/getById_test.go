@@ -34,21 +34,38 @@ func TestGetById(t *testing.T) {
 	})
 }
 
+type StubTodoStore struct {
+	todos map[int]string
+}
+
+func (s *StubTodoStore) GetTodoById(id int) string {
+	todo := s.todos[id]
+	return todo
+}
+
 func TestGetByIdEndpoint(t *testing.T) {
+	store := StubTodoStore{
+		map[int]string{
+			1: `{"id": 1, "description": "FirstTodo", "isCompleted": false}`,
+			2: `{"id": 2, "description": "SecondTodo", "isCompleted": true}`,
+		},
+	}
+	server := &TodoServer{&store}
+
 	t.Run("first todo", func(t *testing.T) {
 		request := newGetToDoByIdReq(1)
 		response := httptest.NewRecorder()
 
-		TodoServer(response, request)
+		server.ServeHTTP(response, request)
 
 		utils.AssertResponseBody(t, response.Body.String(), `{"id": 1, "description": "FirstTodo", "isCompleted": false}`)
 	})
 
-	t.Run("first todo", func(t *testing.T) {
+	t.Run("second todo", func(t *testing.T) {
 		request := newGetToDoByIdReq(2)
 		response := httptest.NewRecorder()
 
-		TodoServer(response, request)
+		server.ServeHTTP(response, request)
 
 		utils.AssertResponseBody(t, response.Body.String(), `{"id": 2, "description": "SecondTodo", "isCompleted": true}`)
 	})
