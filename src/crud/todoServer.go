@@ -12,6 +12,11 @@ type TodoServer struct {
 }
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		w.WriteHeader(http.StatusAccepted)
+		return
+	}
+
 	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/todos/"))
 
 	todo := t.Store.GetTodoById(id)
