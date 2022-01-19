@@ -12,12 +12,16 @@ type TodoServer struct {
 }
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		w.WriteHeader(http.StatusAccepted)
-		return
+	switch r.Method {
+	case http.MethodPost:
+		t.todoCreation(w)
+	case http.MethodGet:
+		t.showDescription(w, r)
 	}
+}
 
-	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/todos/"))
+func (t *TodoServer) showDescription(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/api/todos/"))
 
 	todo := t.Store.GetTodoById(id)
 
@@ -28,14 +32,6 @@ func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, todo)
 }
 
-// func GetTodoById(id int) string {
-// 	if id == 1 {
-// 		return `{"id": 1, "description": "FirstTodo", "isCompleted": false}`
-// 	}
-
-// 	if id == 2 {
-// 		return `{"id": 2, "description": "SecondTodo", "isCompleted": true}`
-// 	}
-
-// 	return ""
-// }
+func (t *TodoServer) todoCreation(w http.ResponseWriter) {
+	w.WriteHeader(http.StatusAccepted)
+}
