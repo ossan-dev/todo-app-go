@@ -36,8 +36,10 @@ func TestAddTodo(t *testing.T) {
 
 	server := &TodoServer{&store}
 
-	t.Run("it returns accepted on POST", func(t *testing.T) {
-		request := newPostTodoReq("Example Todo")
+	t.Run("it adds todo on POST", func(t *testing.T) {
+		todoDescription := "Example"
+
+		request := newPostTodoReq(todoDescription)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -46,6 +48,10 @@ func TestAddTodo(t *testing.T) {
 
 		if len(store.todos) != 1 {
 			t.Errorf("got %d calls to AddTodo but want %d", len(store.todos), 1)
+		}
+
+		if store.todos[1].Description != todoDescription {
+			t.Errorf("did not store correct todo got %q but want %q", store.todos[1].Description, todoDescription)
 		}
 	})
 }
