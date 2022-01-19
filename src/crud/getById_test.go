@@ -73,6 +73,6 @@ func TestGetByIdEndpoint(t *testing.T) {
 }
 
 func newGetToDoByIdReq(id int) *http.Request {
-	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/todos/%d", id), nil)
+	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/api/todos/%d", id), nil)
 	return req
 }
