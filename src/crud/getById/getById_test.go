@@ -21,10 +21,10 @@ func TestGetById(t *testing.T) {
 	)
 
 	t.Run("todo present in collection", func(t *testing.T) {
-		got := store.GetTodoById(1)
+		got, err := store.GetTodoById(1)
 
 		utils.AssertResponseBody(t, got, "FirstTodo")
-		// utils.AssertNoError(t, err)
+		utils.AssertNoError(t, err)
 	})
 
 	// t.Run("todo not present in collection", func(t *testing.T) {
