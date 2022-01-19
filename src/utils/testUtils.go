@@ -48,3 +48,11 @@ func AssertResponseBody(t *testing.T, got, want string) {
 		t.Errorf("got %q but want %q", got, want)
 	}
 }
+
+func AssertStatusCode(t *testing.T, got, want int) {
+	t.Helper()
+
+	if got != want {
+		t.Errorf("got %d but want %d", got, want)
+	}
+}

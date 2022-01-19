@@ -48,6 +48,7 @@ func TestGetByIdEndpoint(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
+		utils.AssertStatusCode(t, response.Code, http.StatusOK)
 		utils.AssertResponseBody(t, response.Body.String(), store.todos[1].Description)
 	})
 
@@ -57,21 +58,17 @@ func TestGetByIdEndpoint(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
+		utils.AssertStatusCode(t, response.Code, http.StatusOK)
 		utils.AssertResponseBody(t, response.Body.String(), store.todos[2].Description)
 	})
 
-	t.Run("returns 404 on missing players", func(t *testing.T) {
+	t.Run("returns 404 on missing todos", func(t *testing.T) {
 		request := newGetToDoByIdReq(4)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
 
-		got := response.Code
-		want := http.StatusNotFound
-
-		if got != want {
-			t.Errorf("got %d but want %d", got, want)
-		}
+		utils.AssertStatusCode(t, response.Code, http.StatusNotFound)
 	})
 }
 
