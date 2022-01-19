@@ -7,16 +7,8 @@ import (
 	"todo-app-go.com/v1/src/crud"
 )
 
-type InMemoryTodoStore struct{}
-
-func (i *InMemoryTodoStore) GetTodoById(id int) string {
-	return "FirstTodo"
-}
-
-func (i *InMemoryTodoStore) AddTodo(description string) {}
-
 func main() {
-	server := &crud.TodoServer{&InMemoryTodoStore{}}
+	server := &crud.TodoServer{&crud.InMemoryTodoStore{}}
 
 	if err := http.ListenAndServe(":5000", server); err != nil {
 		log.Fatalf("could not listen on port 5000 %v", err)
