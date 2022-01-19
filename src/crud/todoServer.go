@@ -34,4 +34,5 @@ func (t *TodoServer) showDescription(w http.ResponseWriter, r *http.Request) {
 
 func (t *TodoServer) todoCreation(w http.ResponseWriter) {
 	w.WriteHeader(http.StatusAccepted)
+	t.Store.AddTodo("Test")
 }
