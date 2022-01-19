@@ -2,6 +2,7 @@ package crud
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -14,7 +15,7 @@ type TodoServer struct {
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
-		t.todoCreation(w)
+		t.todoCreation(w, r)
 	case http.MethodGet:
 		t.showDescription(w, r)
 	}
@@ -32,7 +33,8 @@ func (t *TodoServer) showDescription(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, todo)
 }
 
-func (t *TodoServer) todoCreation(w http.ResponseWriter) {
+func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
-	t.Store.AddTodo("Test")
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	t.Store.AddTodo(string(reqBody))
 }
