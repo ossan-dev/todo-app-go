@@ -1,6 +1,7 @@
 package getbyid
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -27,12 +28,12 @@ func TestGetById(t *testing.T) {
 		utils.AssertNoError(t, err)
 	})
 
-	// t.Run("todo not present in collection", func(t *testing.T) {
-	// 	got, err := store.GetTodoById(4)
+	t.Run("todo not present in collection", func(t *testing.T) {
+		got, err := store.GetTodoById(4)
 
-	// 	utils.AssertTodosEqual(t, got, nil)
-	// 	utils.AssertError(t, err, ErrTodoNotFound)
-	// })
+		utils.AssertResponseBody(t, got, "")
+		utils.AssertError(t, err, errors.New("todo not found"))
+	})
 }
 
 func TestGetByIdEndpoint(t *testing.T) {

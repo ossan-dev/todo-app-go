@@ -29,7 +29,7 @@ func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
-	todo := t.store.GetTodoById(todoId)
+	todo, _ := t.store.GetTodoById(todoId)
 
 	if todo == "" {
 		w.WriteHeader(http.StatusNotFound)

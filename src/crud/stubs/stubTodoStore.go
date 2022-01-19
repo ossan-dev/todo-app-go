@@ -10,9 +10,9 @@ func NewStubTodoStore(todos *map[int]models.Todo) *StubTodoStore {
 	return &StubTodoStore{todos: *todos}
 }
 
-func (s *StubTodoStore) GetTodoById(id int) string {
+func (s *StubTodoStore) GetTodoById(id int) (string, error) {
 	todo := s.todos[id]
-	return todo.Description
+	return todo.Description, nil
 }
 
 func (s *StubTodoStore) AddTodo(description string) {
