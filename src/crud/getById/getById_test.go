@@ -13,12 +13,12 @@ import (
 )
 
 func TestGetById(t *testing.T) {
-	store := stubs.StubTodoStore{
-		map[int]models.Todo{
+	store := stubs.NewStubTodoStore(
+		&map[int]models.Todo{
 			1: models.NewTodo(1, "FirstTodo", false),
 			2: models.NewTodo(2, "SecondTodo", false),
 		},
-	}
+	)
 
 	t.Run("todo present in collection", func(t *testing.T) {
 		got := store.GetTodoById(1)
@@ -36,13 +36,13 @@ func TestGetById(t *testing.T) {
 }
 
 func TestGetByIdEndpoint(t *testing.T) {
-	store := stubs.StubTodoStore{
-		map[int]models.Todo{
+	store := stubs.NewStubTodoStore(
+		&map[int]models.Todo{
 			1: models.NewTodo(1, "FirstTodo", false),
 			2: models.NewTodo(2, "SecondTodo", false),
 		},
-	}
-	server := servers.NewTodoServer(&store)
+	)
+	server := servers.NewTodoServer(store)
 
 	t.Run("first todo", func(t *testing.T) {
 		request := newGetToDoByIdReq(1)
