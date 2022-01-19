@@ -41,3 +41,10 @@ func AssertCollectionsEqual(t *testing.T, got, want []models.Todo) {
 		t.Errorf("got %v but want %v", got, want)
 	}
 }
+
+func AssertResponseBody(t *testing.T, got, want string) {
+	t.Helper()
+	if got != want {
+		t.Errorf("got %q but want %q", got, want)
+	}
+}

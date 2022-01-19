@@ -1,6 +1,7 @@
 package crud
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -35,30 +36,25 @@ func TestGetById(t *testing.T) {
 
 func TestGetByIdEndpoint(t *testing.T) {
 	t.Run("first todo", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/todos/1", nil)
+		request := newGetToDoByIdReq(1)
 		response := httptest.NewRecorder()
 
 		TodoServer(response, request)
 
-		got := response.Body.String()
-		want := `{"id": 1, "description": "FirstTodo", "isCompleted": false}`
-
-		if got != want {
-			t.Errorf("got %q but want %q", got, want)
-		}
+		utils.AssertResponseBody(t, response.Body.String(), `{"id": 1, "description": "FirstTodo", "isCompleted": false}`)
 	})
 
 	t.Run("first todo", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/todos/2", nil)
+		request := newGetToDoByIdReq(2)
 		response := httptest.NewRecorder()
 
 		TodoServer(response, request)
 
-		got := response.Body.String()
-		want := `{"id": 2, "description": "SecondTodo", "isCompleted": true}`
-
-		if got != want {
-			t.Errorf("got %q but want %q", got, want)
-		}
+		utils.AssertResponseBody(t, response.Body.String(), `{"id": 2, "description": "SecondTodo", "isCompleted": true}`)
 	})
+}
+
+func newGetToDoByIdReq(id int) *http.Request {
+	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/todos/%d", id), nil)
+	return req
 }

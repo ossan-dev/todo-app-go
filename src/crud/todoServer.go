@@ -3,18 +3,31 @@ package crud
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
-func TodoServer(w http.ResponseWriter, r *http.Request) {
-	id := strings.TrimPrefix(r.URL.Path, "/todos/")
-	if id == "1" {
-		fmt.Fprintf(w, `{"id": 1, "description": "FirstTodo", "isCompleted": false}`)
-		return
+type TodoServer struct {
+	store TodoStore
+}
+
+func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/todos/"))
+	fmt.Fprintf(w, t.store.GetTodoById(id))
+}
+
+type TodoStore interface {
+	GetTodoById(id int) string
+}
+
+func GetTodoById(id int) string {
+	if id == 1 {
+		return `{"id": 1, "description": "FirstTodo", "isCompleted": false}`
 	}
 
-	if id == "2" {
-		fmt.Fprintf(w, `{"id": 2, "description": "SecondTodo", "isCompleted": true}`)
-		return
+	if id == 2 {
+		return `{"id": 2, "description": "SecondTodo", "isCompleted": true}`
 	}
+
+	return ""
 }
