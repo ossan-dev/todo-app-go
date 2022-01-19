@@ -13,18 +13,17 @@ type TodoServer struct {
 }
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/api/todos/"))
 	switch r.Method {
 	case http.MethodPost:
 		t.todoCreation(w, r)
 	case http.MethodGet:
-		t.showDescription(w, r)
+		t.showDescription(w, id)
 	}
 }
 
-func (t *TodoServer) showDescription(w http.ResponseWriter, r *http.Request) {
-	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/api/todos/"))
-
-	todo := t.Store.GetTodoById(id)
+func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
+	todo := t.Store.GetTodoById(todoId)
 
 	if todo == "" {
 		w.WriteHeader(http.StatusNotFound)
