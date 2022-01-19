@@ -13,6 +13,8 @@ func (i *InMemoryTodoStore) GetTodoById(id int) string {
 	return "FirstTodo"
 }
 
+func (i *InMemoryTodoStore) AddTodo(description string) {}
+
 func main() {
 	server := &crud.TodoServer{&InMemoryTodoStore{}}
 

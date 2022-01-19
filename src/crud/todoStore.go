@@ -10,6 +10,7 @@ var ErrTodoNotFound = errors.New("todo not found in collection")
 
 type TodoStore interface {
 	GetTodoById(id int) string
+	AddTodo(description string)
 }
 
 type TodoManager struct {
