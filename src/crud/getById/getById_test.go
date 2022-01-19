@@ -1,12 +1,12 @@
 package getbyid
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"todo-app-go.com/v1/src/crud/error"
 	"todo-app-go.com/v1/src/crud/servers"
 	"todo-app-go.com/v1/src/crud/stubs"
 	"todo-app-go.com/v1/src/models"
@@ -32,7 +32,7 @@ func TestGetById(t *testing.T) {
 		got, err := store.GetTodoById(4)
 
 		utils.AssertResponseBody(t, got, "")
-		utils.AssertError(t, err, errors.New("todo not found"))
+		utils.AssertError(t, err, error.ErrNotFound)
 	})
 }
 
@@ -71,6 +71,7 @@ func TestGetByIdEndpoint(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
+		utils.AssertResponseBody(t, response.Body.String(), "")
 		utils.AssertStatusCode(t, response.Code, http.StatusNotFound)
 	})
 }

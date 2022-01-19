@@ -1,9 +1,9 @@
 package stubs
 
 import (
-	"errors"
-
 	"todo-app-go.com/v1/src/models"
+
+	e "todo-app-go.com/v1/src/crud/error"
 )
 
 type StubTodoStore struct {
@@ -19,7 +19,7 @@ func (s *StubTodoStore) GetTodoById(id int) (string, error) {
 		todo := val
 		return todo.Description, nil
 	}
-	return "", errors.New("todo not found")
+	return "", e.ErrNotFound
 }
 
 func (s *StubTodoStore) AddTodo(description string) {
