@@ -1,34 +1,26 @@
 package crud
 
-import (
-	"net/http"
-	"net/http/httptest"
-	"testing"
+// func TestSavingTodosAndRetrievingThem(t *testing.T) {
+// 	store := NewInMemoryTodoStore()
+// 	server := TodoServer{store}
+// 	todo := "Example"
 
-	"todo-app-go.com/v1/src/utils"
-)
+// 	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(todo))
+// 	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(todo))
+// 	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(todo))
 
-func TestSavingTodosAndRetrievingThem(t *testing.T) {
-	store := NewInMemoryTodoStore()
-	server := TodoServer{store}
-	todo := "Example"
+// 	response := httptest.NewRecorder()
+// 	server.ServeHTTP(response, newGetToDoByIdReq(1))
+// 	util.AssertStatusCode(t, response.Code, http.StatusOK)
+// 	util.AssertResponseBody(t, response.Body.String(), "Example")
 
-	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(todo))
-	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(todo))
-	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(todo))
+// 	response = httptest.NewRecorder()
+// 	server.ServeHTTP(response, newGetToDoByIdReq(2))
+// 	util.AssertStatusCode(t, response.Code, http.StatusOK)
+// 	util.AssertResponseBody(t, response.Body.String(), "Example")
 
-	response := httptest.NewRecorder()
-	server.ServeHTTP(response, newGetToDoByIdReq(1))
-	utils.AssertStatusCode(t, response.Code, http.StatusOK)
-	utils.AssertResponseBody(t, response.Body.String(), "Example")
-
-	response = httptest.NewRecorder()
-	server.ServeHTTP(response, newGetToDoByIdReq(2))
-	utils.AssertStatusCode(t, response.Code, http.StatusOK)
-	utils.AssertResponseBody(t, response.Body.String(), "Example")
-
-	response = httptest.NewRecorder()
-	server.ServeHTTP(response, newGetToDoByIdReq(3))
-	utils.AssertStatusCode(t, response.Code, http.StatusOK)
-	utils.AssertResponseBody(t, response.Body.String(), "Example")
-}
+// 	response = httptest.NewRecorder()
+// 	server.ServeHTTP(response, newGetToDoByIdReq(3))
+// 	util.AssertStatusCode(t, response.Code, http.StatusOK)
+// 	util.AssertResponseBody(t, response.Body.String(), "Example")
+// }
