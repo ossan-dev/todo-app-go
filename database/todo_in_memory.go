@@ -1,4 +1,4 @@
-package stores
+package database
 
 import "todo-app-go.com/v1/model"
 
