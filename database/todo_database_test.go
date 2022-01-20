@@ -39,7 +39,7 @@ func TestAdd(t *testing.T) {
 	)
 
 	t.Run("add todo when it's correct", func(t *testing.T) {
-		got := store.AddTodo("Example todo")
+		got, _ := store.AddTodo("Example todo")
 		assert.Equal(t, 1, got)
 	})
 

@@ -8,7 +8,7 @@ type InMemoryTodoStore struct {
 
 type TodoStore interface {
 	GetTodoById(id int) (string, error)
-	AddTodo(description string) int
+	AddTodo(description string) (int, error)
 }
 
 func NewInMemoryTodoStore() *InMemoryTodoStore {

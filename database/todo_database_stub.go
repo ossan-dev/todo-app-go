@@ -21,7 +21,7 @@ func (s *StubTodoStore) GetTodoById(id int) (string, error) {
 	return "", error_handler.ErrNotFound
 }
 
-func (s *StubTodoStore) AddTodo(description string) int {
+func (s *StubTodoStore) AddTodo(description string) (int, error) {
 	s.todos[1] = model.NewTodo(1, description, false)
-	return 1
+	return 1, nil
 }
