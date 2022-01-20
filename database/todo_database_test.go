@@ -77,6 +77,6 @@ func TestAdd(t *testing.T) {
 	t.Run("return an error with blank description", func(t *testing.T) {
 		got, err := store.AddTodo(model.NewTodo(1, "", true))
 		assert.Equal(t, 0, got)
-		assert.Error(t, err)
+		assert.IsType(t, error_handler.ErrTodoNotValid, err)
 	})
 }
