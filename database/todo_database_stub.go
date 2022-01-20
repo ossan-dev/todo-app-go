@@ -1,16 +1,15 @@
-package stubs
+package database
 
 import (
-	"todo-app-go.com/v1/src/models"
-
-	e "todo-app-go.com/v1/src/crud/error"
+	"todo-app-go.com/v1/error_handler"
+	"todo-app-go.com/v1/model"
 )
 
 type StubTodoStore struct {
-	todos map[int]models.Todo
+	todos map[int]model.Todo
 }
 
-func NewStubTodoStore(todos *map[int]models.Todo) *StubTodoStore {
+func NewStubTodoStore(todos *map[int]model.Todo) *StubTodoStore {
 	return &StubTodoStore{todos: *todos}
 }
 
@@ -19,9 +18,9 @@ func (s *StubTodoStore) GetTodoById(id int) (string, error) {
 		todo := val
 		return todo.Description, nil
 	}
-	return "", e.ErrNotFound
+	return "", error_handler.ErrNotFound
 }
 
 func (s *StubTodoStore) AddTodo(description string) {
-	s.todos[1] = models.NewTodo(1, description, false)
+	s.todos[1] = model.NewTodo(1, description, false)
 }
