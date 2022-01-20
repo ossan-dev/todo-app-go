@@ -120,3 +120,25 @@ func TestAdd(t *testing.T) {
 		assert.IsType(t, error_handler.ErrTodoNotValid, err)
 	})
 }
+
+func TestUpdate(t *testing.T) {
+	todos := []model.Todo{
+		model.NewTodo(1, "FirstTodo", false),
+	}
+	store := database.NewStubTodoStore(
+		&map[int]model.Todo{
+			1: todos[0],
+		},
+	)
+
+	t.Run("update existing todo", func(t *testing.T) {
+		store.Update(model.NewTodo(1, "UpdatedTodo", true))
+	})
+
+	// t.Run("update not existing todo", func(t *testing.T) {
+	// 	todoUpdated := models.NewTodo(4, "Updated text", false)
+	// 	err := todoManager.Update(todoUpdated)
+
+	// 	utils.AssertError(t, err, ErrTodoNotFound)
+	// })
+}
