@@ -1,13 +1,13 @@
 package stores
 
-import "todo-app-go.com/v1/src/models"
+import "todo-app-go.com/v1/model"
 
 type InMemoryTodoStore struct {
-	todos map[int]models.Todo
+	todos map[int]model.Todo
 }
 
 func NewInMemoryTodoStore() *InMemoryTodoStore {
-	todos := make(map[int]models.Todo, 0)
+	todos := make(map[int]model.Todo, 0)
 	return &InMemoryTodoStore{
 		todos: todos,
 	}
@@ -25,5 +25,5 @@ func (i *InMemoryTodoStore) AddTodo(description string) {
 		}
 	}
 
-	i.todos[maxKey+1] = models.NewTodo(maxKey+1, description, false)
+	i.todos[maxKey+1] = model.NewTodo(maxKey+1, description, false)
 }

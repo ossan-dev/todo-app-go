@@ -1,4 +1,4 @@
-package models
+package model
 
 // TODO: make these props not visible to others
 type Todo struct {
