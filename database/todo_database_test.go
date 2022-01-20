@@ -10,24 +10,24 @@ import (
 )
 
 func TestGetById(t *testing.T) {
+	todo := model.NewTodo(1, "FirstTodo", false)
 	store := database.NewStubTodoStore(
 		&map[int]model.Todo{
-			1: model.NewTodo(1, "FirstTodo", false),
-			2: model.NewTodo(2, "SecondTodo", false),
+			1: todo,
 		},
 	)
 
 	t.Run("todo present in collection", func(t *testing.T) {
 		got, err := store.GetTodoById(1)
 
-		assert.Equal(t, "FirstTodo", got)
+		assert.Equal(t, &todo, got)
 		assert.NoError(t, err)
 	})
 
 	t.Run("todo not present in collection", func(t *testing.T) {
 		got, err := store.GetTodoById(4)
 
-		assert.Equal(t, "", got)
+		assert.Nil(t, got)
 		assert.IsType(t, error_handler.ErrNotFound, err)
 	})
 }
