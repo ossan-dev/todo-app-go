@@ -2,10 +2,17 @@ package util
 
 import (
 	"reflect"
+	"sort"
 	"testing"
 
 	"todo-app-go.com/v1/model"
 )
+
+func SortTodoSliceById(todos []model.Todo) {
+	sort.Slice(todos, func(t1, t2 int) bool {
+		return todos[t1].Id < todos[t2].Id
+	})
+}
 
 func AssertTodosEqual(t *testing.T, got, want model.Todo) {
 	t.Helper()

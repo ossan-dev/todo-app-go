@@ -7,6 +7,7 @@ import (
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/error_handler"
 	"todo-app-go.com/v1/model"
+	"todo-app-go.com/v1/util"
 )
 
 func TestGetById(t *testing.T) {
@@ -47,9 +48,11 @@ func TestGetAll(t *testing.T) {
 			},
 		)
 
-		// TODO: make other assertions
-		// todos is unsorted
-		assert.Equal(t, len(store.GetAllTodos()), len(todos))
+		got := store.GetAllTodos()
+		util.SortTodoSliceById(todos)
+		util.SortTodoSliceById(got)
+
+		assert.Equal(t, todos, got)
 	})
 
 	t.Run("GetAllTodos should return [] when no todos are present", func(t *testing.T) {
@@ -59,7 +62,6 @@ func TestGetAll(t *testing.T) {
 		)
 
 		assert.Equal(t, store.GetAllTodos(), todos)
-		assert.Equal(t, len(store.GetAllTodos()), len(todos))
 	})
 }
 
@@ -68,7 +70,7 @@ func TestGetByStatus(t *testing.T) {
 		todos := []model.Todo{
 			model.NewTodo(1, "FirstTodo", false),
 			model.NewTodo(2, "SecondTodo", true),
-			model.NewTodo(3, "ThirdTodo", false),
+			model.NewTodo(3, "ThirdTodo", true),
 		}
 		store := database.NewStubTodoStore(
 			&map[int]model.Todo{
@@ -78,21 +80,27 @@ func TestGetByStatus(t *testing.T) {
 			},
 		)
 
-		assert.Equal(t, 1, len(store.GetByStatus(true)))
+		got := store.GetByStatus(true)
+		util.SortTodoSliceById(got)
+		assert.Equal(t, []model.Todo{todos[1], todos[2]}, got)
 	})
 
-	// t.Run("get completed todos return empty collections", func(t *testing.T) {
-	// 	todos := []model.Todo{
-	// 		model.NewTodo(1, "FirstTodo", false),
-	// 		model.NewTodo(2, "SecondTodo", false),
-	// 		model.NewTodo(3, "ThirdTodo", false),
-	// 	}
+	t.Run("get completed todos return empty collections", func(t *testing.T) {
+		todos := []model.Todo{
+			model.NewTodo(1, "FirstTodo", false),
+			model.NewTodo(2, "SecondTodo", false),
+		}
+		store := database.NewStubTodoStore(
+			&map[int]model.Todo{
+				1: todos[0],
+				2: todos[1],
+			},
+		)
 
-	// 	todoManager := &TodoManager{todos}
-
-	// 	got := todoManager.GetByStatus(true)
-	// 	util.AssertCollectionsEqual(t, got, []model.Todo{})
-	// })
+		got := store.GetByStatus(true)
+		util.SortTodoSliceById(got)
+		assert.Equal(t, []model.Todo{}, got)
+	})
 }
 
 func TestAdd(t *testing.T) {
