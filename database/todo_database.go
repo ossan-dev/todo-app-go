@@ -9,6 +9,7 @@ type InMemoryTodoStore struct {
 type TodoStore interface {
 	GetTodoById(id int) (model.Todo, error)
 	GetAllTodos() []model.Todo
+	GetByStatus(status bool) []model.Todo
 	AddTodo(todo model.Todo) (int, error)
 }
 

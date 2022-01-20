@@ -29,6 +29,16 @@ func (s *StubTodoStore) GetAllTodos() []model.Todo {
 	return result
 }
 
+func (s *StubTodoStore) GetByStatus(status bool) []model.Todo {
+	result := make([]model.Todo, 0)
+	for _, val := range s.todos {
+		if val.IsCompleted == status {
+			result = append(result, val)
+		}
+	}
+	return result
+}
+
 func (s *StubTodoStore) AddTodo(todo model.Todo) (int, error) {
 	if todo.Description == "" {
 		return 0, error_handler.ErrTodoNotValid
