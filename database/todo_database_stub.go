@@ -31,10 +31,10 @@ func (s *StubTodoStore) GetAllTodos() []model.Todo {
 	return result
 }
 
-func (s *StubTodoStore) AddTodo(description string) (int, error) {
-	if description == "" {
+func (s *StubTodoStore) AddTodo(todo model.Todo) (int, error) {
+	if todo.Description == "" {
 		return 0, errors.New("todo instance not correct")
 	}
-	s.todos[1] = model.NewTodo(1, description, false)
+	s.todos[1] = todo
 	return 1, nil
 }

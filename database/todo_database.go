@@ -9,7 +9,7 @@ type InMemoryTodoStore struct {
 type TodoStore interface {
 	GetTodoById(id int) (model.Todo, error)
 	GetAllTodos() []model.Todo
-	AddTodo(description string) (int, error)
+	AddTodo(todo model.Todo) (int, error)
 }
 
 func NewInMemoryTodoStore() *InMemoryTodoStore {

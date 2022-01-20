@@ -69,13 +69,13 @@ func TestAdd(t *testing.T) {
 	)
 
 	t.Run("add todo when it's correct", func(t *testing.T) {
-		got, err := store.AddTodo("Example todo")
+		got, err := store.AddTodo(model.NewTodo(1, "Example todo", false))
 		assert.Equal(t, 1, got)
 		assert.NoError(t, err)
 	})
 
 	t.Run("return an error with blank description", func(t *testing.T) {
-		got, err := store.AddTodo("")
+		got, err := store.AddTodo(model.NewTodo(1, "", true))
 		assert.Equal(t, 0, got)
 		assert.Error(t, err)
 	})
