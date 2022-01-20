@@ -22,7 +22,7 @@ func (i *InMemoryTodoStore) GetTodoById(id int) (string, error) {
 	return i.todos[id].Description, nil
 }
 
-func (i *InMemoryTodoStore) AddTodo(description string) {
+func (i *InMemoryTodoStore) AddTodo(description string) (int, error) {
 	maxKey := 0
 	for key := range i.todos {
 		if key > maxKey {
@@ -31,4 +31,5 @@ func (i *InMemoryTodoStore) AddTodo(description string) {
 	}
 
 	i.todos[maxKey+1] = model.NewTodo(maxKey+1, description, false)
+	return 1, nil
 }
