@@ -1,6 +1,8 @@
 package database
 
 import (
+	"errors"
+
 	"todo-app-go.com/v1/error_handler"
 	"todo-app-go.com/v1/model"
 )
@@ -22,6 +24,9 @@ func (s *StubTodoStore) GetTodoById(id int) (string, error) {
 }
 
 func (s *StubTodoStore) AddTodo(description string) (int, error) {
+	if description == "" {
+		return 0, errors.New("todo instance not correct")
+	}
 	s.todos[1] = model.NewTodo(1, description, false)
 	return 1, nil
 }
