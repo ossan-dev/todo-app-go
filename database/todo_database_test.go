@@ -34,24 +34,25 @@ func TestGetById(t *testing.T) {
 
 func TestGetAll(t *testing.T) {
 	t.Run("GetAllTodos should return all the todos added", func(t *testing.T) {
-		todos := []models.Todo{
-			models.NewTodo(1, "FirstTodo", false),
-			models.NewTodo(2, "SecondTodo", false),
-			models.NewTodo(3, "ThirdTodo", true),
+		todos := map[int]model.Todo{
+			1: model.NewTodo(1, "FirstTodo", false),
+			2: model.NewTodo(2, "SecondTodo", true),
+			3: model.NewTodo(3, "ThirdTodo", false),
 		}
+		store := database.NewStubTodoStore(
+			&todos,
+		)
 
-		todoManager := &TodoManager{todos}
-
-		utils.AssertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
+		assert.Equal(t, store.GetAllTodos(), todos)
 	})
 
-	t.Run("GetAllTodos should return [] when no todos are present", func(t *testing.T) {
-		todos := []models.Todo{}
+	// t.Run("GetAllTodos should return [] when no todos are present", func(t *testing.T) {
+	// 	todos := []models.Todo{}
 
-		todoManager := &TodoManager{todos}
+	// 	todoManager := &TodoManager{todos}
 
-		utils.AssertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
-	})
+	// 	util.AssertCollectionsEqual(t, todoManager.GetAllTodos(), todos)
+	// })
 }
 
 func TestAdd(t *testing.T) {
