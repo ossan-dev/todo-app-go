@@ -1,13 +1,13 @@
-package utils
+package util
 
 import (
 	"reflect"
 	"testing"
 
-	"todo-app-go.com/v1/src/models"
+	"todo-app-go.com/v1/model"
 )
 
-func AssertTodosEqual(t *testing.T, got, want models.Todo) {
+func AssertTodosEqual(t *testing.T, got, want model.Todo) {
 	t.Helper()
 
 	if !reflect.DeepEqual(got, want) {
@@ -34,7 +34,7 @@ func AssertNoError(t *testing.T, got error) {
 	}
 }
 
-func AssertCollectionsEqual(t *testing.T, got, want []models.Todo) {
+func AssertCollectionsEqual(t *testing.T, got, want []model.Todo) {
 	t.Helper()
 
 	if !reflect.DeepEqual(got, want) {
