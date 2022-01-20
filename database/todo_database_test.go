@@ -7,6 +7,7 @@ import (
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/error_handler"
 	"todo-app-go.com/v1/model"
+	"todo-app-go.com/v1/util"
 )
 
 func TestGetById(t *testing.T) {
@@ -60,6 +61,37 @@ func TestGetAll(t *testing.T) {
 
 		assert.Equal(t, store.GetAllTodos(), todos)
 		assert.Equal(t, len(store.GetAllTodos()), len(todos))
+	})
+}
+
+func TestGetByStatus(t *testing.T) {
+	t.Run("get completed todos return non-empty collections", func(t *testing.T) {
+		todos := []model.Todo{
+			model.NewTodo(1, "FirstTodo", false),
+			model.NewTodo(2, "SecondTodo", false),
+			model.NewTodo(3, "ThirdTodo", true),
+		}
+
+		todoManager := &TodoManager{todos}
+
+		got := todoManager.GetByStatus(true)
+		want := []model.Todo{
+			model.NewTodo(3, "ThirdTodo", true),
+		}
+		util.AssertCollectionsEqual(t, got, want)
+	})
+
+	t.Run("get completed todos return empty collections", func(t *testing.T) {
+		todos := []model.Todo{
+			model.NewTodo(1, "FirstTodo", false),
+			model.NewTodo(2, "SecondTodo", false),
+			model.NewTodo(3, "ThirdTodo", false),
+		}
+
+		todoManager := &TodoManager{todos}
+
+		got := todoManager.GetByStatus(true)
+		util.AssertCollectionsEqual(t, got, []model.Todo{})
 	})
 }
 
