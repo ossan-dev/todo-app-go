@@ -42,4 +42,9 @@ func TestAdd(t *testing.T) {
 		got := store.AddTodo("Example todo")
 		assert.Equal(t, 1, got)
 	})
+
+	t.Run("return an error with blank description", func(t *testing.T) {
+		_, err := store.AddTodo("")
+		assert.Error(t, err)
+	})
 }
