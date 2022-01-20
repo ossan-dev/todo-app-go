@@ -46,3 +46,7 @@ func (s *StubTodoStore) AddTodo(todo model.Todo) (int, error) {
 	s.todos[1] = todo
 	return 1, nil
 }
+
+func (s *StubTodoStore) UpdateTodo(todo model.Todo) int {
+	return 0
+}
