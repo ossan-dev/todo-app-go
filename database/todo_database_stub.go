@@ -15,12 +15,12 @@ func NewStubTodoStore(todos *map[int]model.Todo) *StubTodoStore {
 	return &StubTodoStore{todos: *todos}
 }
 
-func (s *StubTodoStore) GetTodoById(id int) (string, error) {
+func (s *StubTodoStore) GetTodoById(id int) (*model.Todo, error) {
 	if val, ok := s.todos[id]; ok {
 		todo := val
-		return todo.Description, nil
+		return &todo, nil
 	}
-	return "", error_handler.ErrNotFound
+	return nil, error_handler.ErrNotFound
 }
 
 func (s *StubTodoStore) AddTodo(description string) (int, error) {
