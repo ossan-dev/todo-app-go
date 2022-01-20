@@ -6,6 +6,11 @@ type InMemoryTodoStore struct {
 	todos map[int]model.Todo
 }
 
+type TodoStore interface {
+	GetTodoById(id int) (string, error)
+	AddTodo(description string)
+}
+
 func NewInMemoryTodoStore() *InMemoryTodoStore {
 	todos := make(map[int]model.Todo, 0)
 	return &InMemoryTodoStore{

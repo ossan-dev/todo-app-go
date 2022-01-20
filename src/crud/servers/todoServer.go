@@ -7,14 +7,14 @@ import (
 	"strconv"
 	"strings"
 
-	"todo-app-go.com/v1/src/crud/interfaces"
+	"todo-app-go.com/v1/database"
 )
 
 type TodoServer struct {
-	store interfaces.TodoStore
+	store database.TodoStore
 }
 
-func NewTodoServer(todoStore interfaces.TodoStore) *TodoServer {
+func NewTodoServer(todoStore database.TodoStore) *TodoServer {
 	return &TodoServer{todoStore}
 }
 
