@@ -3,6 +3,7 @@ package database_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/error_handler"
 	"todo-app-go.com/v1/model"
@@ -30,4 +31,14 @@ func TestGetById(t *testing.T) {
 		util.AssertResponseBody(t, got, "")
 		util.AssertError(t, err, error_handler.ErrNotFound)
 	})
+}
+
+func TestAdd(t *testing.T) {
+	store := database.NewStubTodoStore(
+		&map[int]model.Todo{},
+	)
+
+	got := store.AddTodo("Example todo")
+
+	assert.Equal(t, 1, got)
 }
