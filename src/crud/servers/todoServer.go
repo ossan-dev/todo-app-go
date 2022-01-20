@@ -1,6 +1,7 @@
 package servers
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 	"strings"
 
 	"todo-app-go.com/v1/database"
+	"todo-app-go.com/v1/model"
 )
 
 type TodoServer struct {
@@ -29,17 +31,18 @@ func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
-	todo, _ := t.store.GetTodoById(todoId)
-
-	if todo == "" {
+	todo, err := t.store.GetTodoById(todoId)
+	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 	}
 
-	fmt.Fprintf(w, todo)
+	fmt.Fprintf(w, "%v", todo)
 }
 
 func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	t.store.AddTodo(string(reqBody))
+	var todo model.Todo
+	json.Unmarshal(reqBody, &todo)
+	t.store.AddTodo(todo)
 }

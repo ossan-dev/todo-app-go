@@ -20,11 +20,19 @@ func NewInMemoryTodoStore() *InMemoryTodoStore {
 	}
 }
 
-func (i *InMemoryTodoStore) GetTodoById(id int) (string, error) {
-	return i.todos[id].Description, nil
+func (i *InMemoryTodoStore) GetTodoById(id int) (model.Todo, error) {
+	return i.todos[id], nil
 }
 
-func (i *InMemoryTodoStore) AddTodo(description string) (int, error) {
+func (i *InMemoryTodoStore) GetAllTodos() []model.Todo {
+	return []model.Todo{}
+}
+
+func (i *InMemoryTodoStore) GetByStatus(status bool) []model.Todo {
+	return []model.Todo{}
+}
+
+func (i *InMemoryTodoStore) AddTodo(todo model.Todo) (int, error) {
 	maxKey := 0
 	for key := range i.todos {
 		if key > maxKey {
@@ -32,6 +40,6 @@ func (i *InMemoryTodoStore) AddTodo(description string) (int, error) {
 		}
 	}
 
-	i.todos[maxKey+1] = model.NewTodo(maxKey+1, description, false)
+	i.todos[maxKey+1] = todo
 	return 1, nil
 }
