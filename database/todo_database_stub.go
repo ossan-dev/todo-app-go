@@ -23,6 +23,14 @@ func (s *StubTodoStore) GetTodoById(id int) (*model.Todo, error) {
 	return nil, error_handler.ErrNotFound
 }
 
+func (s *StubTodoStore) GetAllTodos() []model.Todo {
+	result := make([]model.Todo, 0)
+	for _, val := range s.todos {
+		result = append(result, val)
+	}
+	return result
+}
+
 func (s *StubTodoStore) AddTodo(description string) (int, error) {
 	if description == "" {
 		return 0, errors.New("todo instance not correct")

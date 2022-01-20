@@ -7,7 +7,8 @@ type InMemoryTodoStore struct {
 }
 
 type TodoStore interface {
-	GetTodoById(id int) (string, error)
+	GetTodoById(id int) (model.Todo, error)
+	GetAllTodos() []model.Todo
 	AddTodo(description string) (int, error)
 }
 
