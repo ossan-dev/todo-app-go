@@ -7,7 +7,6 @@ import (
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/error_handler"
 	"todo-app-go.com/v1/model"
-	"todo-app-go.com/v1/util"
 )
 
 func TestGetById(t *testing.T) {
@@ -22,14 +21,14 @@ func TestGetById(t *testing.T) {
 		got, err := store.GetTodoById(1)
 
 		assert.Equal(t, "FirstTodo", got)
-		util.AssertNoError(t, err)
+		assert.NoError(t, err)
 	})
 
 	t.Run("todo not present in collection", func(t *testing.T) {
 		got, err := store.GetTodoById(4)
 
 		assert.Equal(t, "", got)
-		util.AssertError(t, err, error_handler.ErrNotFound)
+		assert.IsType(t, error_handler.ErrNotFound, err)
 	})
 }
 
