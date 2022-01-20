@@ -21,14 +21,14 @@ func TestGetById(t *testing.T) {
 	t.Run("todo present in collection", func(t *testing.T) {
 		got, err := store.GetTodoById(1)
 
-		util.AssertResponseBody(t, got, "FirstTodo")
+		assert.Equal(t, "FirstTodo", got)
 		util.AssertNoError(t, err)
 	})
 
 	t.Run("todo not present in collection", func(t *testing.T) {
 		got, err := store.GetTodoById(4)
 
-		util.AssertResponseBody(t, got, "")
+		assert.Equal(t, "", got)
 		util.AssertError(t, err, error_handler.ErrNotFound)
 	})
 }
@@ -38,7 +38,8 @@ func TestAdd(t *testing.T) {
 		&map[int]model.Todo{},
 	)
 
-	got := store.AddTodo("Example todo")
-
-	assert.Equal(t, 1, got)
+	t.Run("add todo when it's correct", func(t *testing.T) {
+		got := store.AddTodo("Example todo")
+		assert.Equal(t, 1, got)
+	})
 }

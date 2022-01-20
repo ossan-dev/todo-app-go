@@ -23,5 +23,5 @@ func (s *StubTodoStore) GetTodoById(id int) (string, error) {
 
 func (s *StubTodoStore) AddTodo(description string) int {
 	s.todos[1] = model.NewTodo(1, description, false)
-	return 0
+	return 1
 }
