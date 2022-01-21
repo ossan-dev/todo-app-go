@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -47,7 +46,14 @@ func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
 // }
 
 func (t *TodoServer) getAllTodos(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "getAllTodos")
+	todos := []model.Todo{
+		model.NewTodo(1, "First Todo", false),
+		model.NewTodo(2, "Second Todo", true),
+	}
+
+	json.NewEncoder(w).Encode(todos)
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
