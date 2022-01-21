@@ -42,28 +42,25 @@ func TestSavingTodosAndRetrievingThem(t *testing.T) {
 	})
 }
 
-// func TestSavingTodoAndRetrievingIt(t *testing.T) {
-// 	store := database.NewInMemoryTodoStore()
-// 	server := controller.NewTodoServer(&store)
-// 	wantedTodo := model.NewTodo(1, "First Todo", false)
+func TestSavingTodoAndRetrievingIt(t *testing.T) {
+	store := database.NewInMemoryTodoStore()
+	server := controller.NewTodoServer(&store)
+	wantedTodo := model.NewTodo(1, "First Todo", false)
 
-// 	t.Run("post todo", func(t *testing.T) {
-// 		res := httptest.NewRecorder()
+	t.Run("post todo", func(t *testing.T) {
+		res := httptest.NewRecorder()
 
-// 		server.ServeHTTP(res, util.NewPostReq(t, "/api/todos", &wantedTodos[0]))
-// 		assert.Equal(t, http.StatusCreated, res.Code)
+		server.ServeHTTP(res, util.NewPostReq(t, "/api/todos", &wantedTodo))
+		assert.Equal(t, http.StatusCreated, res.Code)
+	})
 
-// 		server.ServeHTTP(res, util.NewPostReq(t, "/api/todos", &wantedTodos[1]))
-// 		assert.Equal(t, http.StatusCreated, res.Code)
-// 	})
+	t.Run("get todos", func(t *testing.T) {
+		res := httptest.NewRecorder()
+		server.ServeHTTP(res, util.NewGetTodoReq(t, "/api/todos"))
 
-// 	t.Run("get todos", func(t *testing.T) {
-// 		res := httptest.NewRecorder()
-// 		server.ServeHTTP(res, util.NewGetTodoReq(t, "/api/todos"))
-
-// 		var todos []model.Todo
-// 		json.NewDecoder(res.Body).Decode(&todos)
-// 		assert.Equal(t, http.StatusOK, res.Code)
-// 		assert.Equal(t, wantedTodos, todos)
-// 	})
-//}
+		var todos []model.Todo
+		json.NewDecoder(res.Body).Decode(&todos)
+		assert.Equal(t, http.StatusOK, res.Code)
+		assert.Equal(t, wantedTodo, todos)
+	})
+}
