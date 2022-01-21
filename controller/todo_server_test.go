@@ -18,7 +18,7 @@ func TestGetAll(t *testing.T) {
 			1: todo,
 		},
 	)
-	server := controller.NewTodoServer(store)
+	server := controller.NewTodoServer(&store)
 
 	t.Run("it returns 200 on /api/todos", func(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodGet, "/api/todos", nil)

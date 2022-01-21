@@ -11,22 +11,21 @@ import (
 )
 
 type TodoServer struct {
-	Store  database.TodoStore
-	router *http.ServeMux
+	todoStore database.TodoStore
+	http.Handler
 }
 
 func NewTodoServer(todoStore database.TodoStore) *TodoServer {
-	server := &TodoServer{
-		todoStore,
-		http.NewServeMux(),
-	}
+	server := new(TodoServer)
 
-	server.router.Handle("/api/todos", http.HandlerFunc(server.todosHandler))
+	server.todoStore = todoStore
+
+	router := http.NewServeMux()
+	router.Handle("/api/todos", http.HandlerFunc(server.todosHandler))
+
+	server.Handler = router
+
 	return server
-}
-
-func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	t.router.ServeHTTP(w, r)
 }
 
 func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
@@ -56,5 +55,5 @@ func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var todo model.Todo
 	json.Unmarshal(reqBody, &todo)
-	t.Store.AddTodo(todo)
+	t.todoStore.AddTodo(todo)
 }
