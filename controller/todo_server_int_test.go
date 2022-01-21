@@ -2,6 +2,7 @@ package controller_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -56,7 +57,7 @@ func TestSavingTodoAndRetrievingIt(t *testing.T) {
 
 	t.Run("get todos", func(t *testing.T) {
 		res := httptest.NewRecorder()
-		server.ServeHTTP(res, util.NewGetTodoReq(t, "/api/todos"))
+		server.ServeHTTP(res, util.NewGetTodoReq(t, fmt.Sprintf("/api/todos/%d", wantedTodo.Id)))
 
 		var todos []model.Todo
 		json.NewDecoder(res.Body).Decode(&todos)

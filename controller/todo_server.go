@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/model"
 )
@@ -19,8 +21,10 @@ func NewTodoServer(todoStore database.TodoStore) *TodoServer {
 
 	server.todoStore = todoStore
 
-	router := http.NewServeMux()
+	router := mux.NewRouter()
+
 	router.Handle("/api/todos", http.HandlerFunc(server.todosHandler))
+	router.Handle("/api/todos/{id:[0-9]+}", http.HandlerFunc(server.todoByIdHandler))
 
 	server.Handler = router
 
@@ -42,4 +46,14 @@ func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
 		t.todoStore.AddTodo(todo)
 		w.WriteHeader(http.StatusCreated)
 	}
+}
+
+func (t *TodoServer) todoByIdHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	idParam := params["id"]
+	id, _ := strconv.Atoi(idParam)
+	w.Header().Set("content-type", "application/json")
+	todo, _ := t.todoStore.GetTodoById(id)
+	json.NewEncoder(w).Encode(todo)
+	w.WriteHeader(http.StatusOK)
 }
