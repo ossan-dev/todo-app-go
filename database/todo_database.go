@@ -15,6 +15,7 @@ type TodoStore interface {
 	GetByStatus(status bool) []model.Todo
 	AddTodo(todo model.Todo) (int, error)
 	UpdateTodo(todo model.Todo) (*int, error)
+	DeleteById(id int) (int, error)
 }
 
 func NewInMemoryTodoStore() *InMemoryTodoStore {
@@ -56,4 +57,12 @@ func (i *InMemoryTodoStore) UpdateTodo(todo model.Todo) (*int, error) {
 		}
 	}
 	return nil, error_handler.ErrNotFound
+}
+
+func (i *InMemoryTodoStore) DeleteById(id int) (int, error) {
+	if _, ok := i.todos[id]; ok {
+		delete(i.todos, id)
+		return 1, nil
+	}
+	return 0, error_handler.ErrNotFound
 }
