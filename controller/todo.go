@@ -2,12 +2,12 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	"todo-app-go.com/v1/database"
+	"todo-app-go.com/v1/error_handler"
 	"todo-app-go.com/v1/model"
 )
 
@@ -40,9 +40,12 @@ func (tc *TodoController) GetTodoById(w http.ResponseWriter, r *http.Request) {
 // create a new todo
 func (tc *TodoController) AddTodo(w http.ResponseWriter, r *http.Request) {
 	var todo model.Todo
-	err := json.NewDecoder(r.Body).Decode(&todo)
-	if err != nil {
-		panic(fmt.Sprintf("invalid json data, err: %v", err))
+	parseErr := json.NewDecoder(r.Body).Decode(&todo)
+	if parseErr != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		err := error_handler.TodoAppError{Msg: error_handler.INVALID_BODY_REQUEST_MSG, Code: error_handler.BAD_REQUEST_CODE, Details: []string{parseErr.Error()}}
+		json.NewEncoder(w).Encode(err)
+		return
 	}
 	tc.store.AddTodo(todo)
 	w.WriteHeader(http.StatusCreated)

@@ -38,6 +38,7 @@ func TestSavingTodosAndRetrievingThem(t *testing.T) {
 
 		var todos []model.Todo
 		json.NewDecoder(res.Body).Decode(&todos)
+		util.SortTodoSliceById(todos)
 		assert.Equal(t, http.StatusOK, res.Code)
 		assert.Equal(t, wantedTodos, todos)
 	})

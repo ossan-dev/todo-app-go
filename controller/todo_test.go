@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"todo-app-go.com/v1/controller"
 	"todo-app-go.com/v1/database"
+	"todo-app-go.com/v1/error_handler"
 	"todo-app-go.com/v1/model"
 	"todo-app-go.com/v1/util"
 )
@@ -43,7 +44,6 @@ func TestGetAll(t *testing.T) {
 		util.SortTodoSliceById(got)
 
 		assert.Equal(t, wantedTodos, got)
-
 		assert.Equal(t, util.JsonContentType, res.Result().Header.Get("content-type"))
 	})
 }
@@ -61,6 +61,10 @@ func TestAdd(t *testing.T) {
 
 		server.ServeHTTP(res, req)
 
+		var parseError error_handler.TodoAppError
+		json.NewDecoder(res.Body).Decode(&parseError)
+
 		assert.Equal(t, http.StatusBadRequest, res.Code)
+		assert.Equal(t, error_handler.BAD_REQUEST_CODE, parseError.Code)
 	})
 }
