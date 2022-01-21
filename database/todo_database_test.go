@@ -159,12 +159,14 @@ func TestDelete(t *testing.T) {
 	)
 
 	t.Run("delete todo", func(t *testing.T) {
-		deletedRows := store.DeleteById(1)
+		deletedRows, err := store.DeleteById(1)
 		assert.Equal(t, 1, deletedRows)
+		assert.Nil(t, err)
 	})
 
-	// t.Run("not delete todo if not exists", func(t *testing.T) {
-	// 	err := todoManager.DeleteById(4)
-	// 	utils.AssertError(t, err, ErrTodoNotFound)
-	// })
+	t.Run("not delete todo if not exists", func(t *testing.T) {
+		deletedRows, err := store.DeleteById(2)
+		assert.Equal(t, 0, deletedRows)
+		assert.IsType(t, error_handler.ErrNotFound, err)
+	})
 }

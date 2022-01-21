@@ -58,6 +58,9 @@ func (s *StubTodoStore) UpdateTodo(todo model.Todo) (*int, error) {
 }
 
 func (s *StubTodoStore) DeleteById(id int) int {
-	delete(s.todos, id)
-	return 1
+	if _, ok := s.todos[id]; ok {
+		delete(s.todos, id)
+		return 1
+	}
+	return 0
 }
