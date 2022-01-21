@@ -9,8 +9,7 @@ import (
 )
 
 func main() {
-	store := database.NewInMemoryTodoStore()
-	server := controller.NewTodoServer(store)
+	server := &controller.TodoServer{database.NewInMemoryTodoStore()}
 
 	if err := http.ListenAndServe(":5000", server); err != nil {
 		log.Fatalf("could not listen on port 5000 %v", err)

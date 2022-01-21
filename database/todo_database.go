@@ -10,7 +10,7 @@ type InMemoryTodoStore struct {
 }
 
 type TodoStore interface {
-	GetTodoById(id int) (model.Todo, error)
+	GetTodoById(id int) (*model.Todo, error)
 	GetAllTodos() []model.Todo
 	GetByStatus(status bool) []model.Todo
 	AddTodo(todo model.Todo) (int, error)
@@ -25,8 +25,9 @@ func NewInMemoryTodoStore() *InMemoryTodoStore {
 	}
 }
 
-func (i *InMemoryTodoStore) GetTodoById(id int) (model.Todo, error) {
-	return i.todos[id], nil
+func (i *InMemoryTodoStore) GetTodoById(id int) (*model.Todo, error) {
+	var todo model.Todo
+	return &todo, nil
 }
 
 func (i *InMemoryTodoStore) GetAllTodos() []model.Todo {

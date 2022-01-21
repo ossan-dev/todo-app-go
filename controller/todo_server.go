@@ -13,11 +13,11 @@ import (
 )
 
 type TodoServer struct {
-	store database.TodoStore
+	Store database.TodoStore
 }
 
-func NewTodoServer(todoStore database.TodoStore) *TodoServer {
-	return &TodoServer{todoStore}
+func NewTodoServer(todoStore *database.TodoStore) *TodoServer {
+	return &TodoServer{*todoStore}
 }
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +31,7 @@ func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
-	todo, err := t.store.GetTodoById(todoId)
+	todo, err := t.Store.GetTodoById(todoId)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 	}
@@ -44,5 +44,5 @@ func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var todo model.Todo
 	json.Unmarshal(reqBody, &todo)
-	t.store.AddTodo(todo)
+	t.Store.AddTodo(todo)
 }
