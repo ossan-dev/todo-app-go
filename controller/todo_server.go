@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
 	"todo-app-go.com/v1/database"
@@ -28,22 +27,15 @@ func NewTodoServer(todoStore database.TodoStore) *TodoServer {
 }
 
 func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
-	json.NewEncoder(w).Encode(t.todoStore.GetAllTodos())
-	w.WriteHeader(http.StatusOK)
-}
-
-func (t *TodoServer) getAllTodos() []model.Todo {
-	return []model.Todo{
-		model.NewTodo(1, "First Todo", false),
-		model.NewTodo(2, "Second Todo", true),
+	switch r.Method {
+	case http.MethodGet:
+		w.Header().Set("content-type", "application/json")
+		json.NewEncoder(w).Encode(t.todoStore.GetAllTodos())
+		w.WriteHeader(http.StatusOK)
+	case http.MethodPost:
+		var todo model.Todo
+		json.NewDecoder(r.Body).Decode(&todo)
+		t.todoStore.AddTodo(todo)
+		w.WriteHeader(http.StatusCreated)
 	}
-}
-
-func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusAccepted)
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	var todo model.Todo
-	json.Unmarshal(reqBody, &todo)
-	t.todoStore.AddTodo(todo)
 }

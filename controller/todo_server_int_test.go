@@ -11,7 +11,6 @@ import (
 	"todo-app-go.com/v1/controller"
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/model"
-	"todo-app-go.com/v1/util"
 )
 
 func TestSavingTodosAndRetrievingThem(t *testing.T) {
@@ -19,15 +18,12 @@ func TestSavingTodosAndRetrievingThem(t *testing.T) {
 	server := controller.NewTodoServer(&store)
 	wantedTodos := []model.Todo{
 		model.NewTodo(1, "First Todo", false),
-		model.NewTodo(2, "Second Todo", false),
 	}
 
-	server.ServeHTTP(httptest.NewRecorder(), newPostTodoReq(t, &wantedTodos[0]))
-
 	res := httptest.NewRecorder()
+	server.ServeHTTP(res, newPostTodoReq(t, &wantedTodos[0]))
 
-	assert.Equal(t, http.StatusOK, res.Code)
-	util.AssertResponseBody(t, response.Body.String(), "Example")
+	assert.Equal(t, http.StatusCreated, res.Code)
 }
 
 func newPostTodoReq(t *testing.T, todo *model.Todo) *http.Request {
