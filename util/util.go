@@ -18,21 +18,6 @@ func SortTodoSliceById(todos []model.Todo) {
 	})
 }
 
-func AssertResponseBody(t *testing.T, got, want string) {
-	t.Helper()
-	if got != want {
-		t.Errorf("got %q but want %q", got, want)
-	}
-}
-
-func AssertStatusCode(t *testing.T, got, want int) {
-	t.Helper()
-
-	if got != want {
-		t.Errorf("got %d but want %d", got, want)
-	}
-}
-
 func NewPostReq(t *testing.T, url string, todo *model.Todo) *http.Request {
 	t.Helper()
 	buf, err := json.Marshal(todo)
