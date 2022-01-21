@@ -33,15 +33,6 @@ func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
-// 	todo, err := t.Store.GetTodoById(todoId)
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusNotFound)
-// 	}
-
-// 	fmt.Fprintf(w, "%v", todo)
-// }
-
 func (t *TodoServer) getAllTodos() []model.Todo {
 	return []model.Todo{
 		model.NewTodo(1, "First Todo", false),
