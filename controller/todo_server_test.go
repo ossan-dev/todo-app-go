@@ -42,5 +42,7 @@ func TestGetAll(t *testing.T) {
 		util.SortTodoSliceById(got)
 
 		assert.Equal(t, wantedTodos, got)
+
+		assert.Equal(t, "application/json", res.Result().Header.Get("content-type"))
 	})
 }
