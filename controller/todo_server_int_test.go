@@ -1,6 +1,7 @@
 package controller_test
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -17,10 +18,26 @@ func TestSavingTodosAndRetrievingThem(t *testing.T) {
 	server := controller.NewTodoServer(&store)
 	wantedTodos := []model.Todo{
 		model.NewTodo(1, "First Todo", false),
+		model.NewTodo(2, "Second Todo", true),
 	}
 
-	res := httptest.NewRecorder()
-	server.ServeHTTP(res, util.NewPostTodoReq(t, "/api/todos", &wantedTodos[0]))
+	t.Run("post todos", func(t *testing.T) {
+		res := httptest.NewRecorder()
 
-	assert.Equal(t, http.StatusCreated, res.Code)
+		server.ServeHTTP(res, util.NewPostReq(t, "/api/todos", &wantedTodos[0]))
+		assert.Equal(t, http.StatusCreated, res.Code)
+
+		server.ServeHTTP(res, util.NewPostReq(t, "/api/todos", &wantedTodos[1]))
+		assert.Equal(t, http.StatusCreated, res.Code)
+	})
+
+	t.Run("get todos", func(t *testing.T) {
+		res := httptest.NewRecorder()
+		server.ServeHTTP(res, util.NewGetTodoReq(t, "/api/todos"))
+
+		var todos []model.Todo
+		json.NewDecoder(res.Body).Decode(&todos)
+		assert.Equal(t, http.StatusOK, res.Code)
+		assert.Equal(t, wantedTodos, todos)
+	})
 }

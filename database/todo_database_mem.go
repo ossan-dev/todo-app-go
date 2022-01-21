@@ -31,7 +31,11 @@ func (i *InMemoryTodoStore) GetTodoById(id int) (*model.Todo, error) {
 }
 
 func (i *InMemoryTodoStore) GetAllTodos() []model.Todo {
-	return []model.Todo{}
+	todos := make([]model.Todo, 0)
+	for _, val := range i.todos {
+		todos = append(todos, val)
+	}
+	return todos
 }
 
 func (i *InMemoryTodoStore) GetByStatus(status bool) []model.Todo {
