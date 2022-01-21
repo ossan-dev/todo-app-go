@@ -47,12 +47,12 @@ func (s *StubTodoStore) AddTodo(todo model.Todo) (int, error) {
 	return 1, nil
 }
 
-func (s *StubTodoStore) UpdateTodo(todo model.Todo) int {
+func (s *StubTodoStore) UpdateTodo(todo model.Todo) (*int, error) {
 	for index, val := range s.todos {
 		if val.Id == todo.Id {
 			s.todos[index] = todo
-			return todo.Id
+			return &todo.Id, nil
 		}
 	}
-	return 0
+	return nil, error_handler.ErrNotFound
 }
