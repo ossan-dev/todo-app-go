@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -36,16 +35,12 @@ func TestGetAll(t *testing.T) {
 		var got []model.Todo
 
 		err := json.NewDecoder(res.Body).Decode(&got)
-		if err != nil {
-			t.Fatalf("Unable to parse response from server %q into slice of Todo, %v", res.Body, err)
-		}
 
+		assert.Nil(t, err)
 		assert.Equal(t, res.Code, http.StatusOK)
 
 		util.SortTodoSliceById(got)
 
-		if !reflect.DeepEqual(got, wantedTodos) {
-			t.Errorf("got %v but want %v", got, wantedTodos)
-		}
+		assert.Equal(t, wantedTodos, got)
 	})
 }
