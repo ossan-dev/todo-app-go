@@ -48,5 +48,11 @@ func (s *StubTodoStore) AddTodo(todo model.Todo) (int, error) {
 }
 
 func (s *StubTodoStore) UpdateTodo(todo model.Todo) int {
+	for index, val := range s.todos {
+		if val.Id == todo.Id {
+			s.todos[index] = todo
+			return todo.Id
+		}
+	}
 	return 0
 }

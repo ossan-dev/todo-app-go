@@ -132,7 +132,10 @@ func TestUpdate(t *testing.T) {
 	)
 
 	t.Run("update existing todo", func(t *testing.T) {
-		store.UpdateTodo(model.NewTodo(1, "UpdatedTodo", true))
+		todo := model.NewTodo(1, "UpdatedTodo", true)
+		got := store.UpdateTodo(todo)
+
+		assert.Equal(t, todo.Id, got)
 	})
 
 	// t.Run("update not existing todo", func(t *testing.T) {
