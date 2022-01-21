@@ -7,6 +7,8 @@ import (
 	"todo-app-go.com/v1/model"
 )
 
+var JsonContentType string = "application/json"
+
 func SortTodoSliceById(todos []model.Todo) {
 	sort.Slice(todos, func(t1, t2 int) bool {
 		return todos[t1].Id < todos[t2].Id

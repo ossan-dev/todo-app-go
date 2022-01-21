@@ -43,6 +43,6 @@ func TestGetAll(t *testing.T) {
 
 		assert.Equal(t, wantedTodos, got)
 
-		assert.Equal(t, "application/json", res.Result().Header.Get("content-type"))
+		assert.Equal(t, util.JsonContentType, res.Result().Header.Get("content-type"))
 	})
 }
