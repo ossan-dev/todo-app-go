@@ -27,7 +27,11 @@ func NewInMemoryTodoStore() InMemoryTodoStore {
 
 func (i *InMemoryTodoStore) GetTodoById(id int) (*model.Todo, error) {
 	var todo model.Todo
-	return &todo, nil
+	if val, ok := i.todos[id]; ok {
+		todo = val
+		return &todo, nil
+	}
+	return &todo, error_handler.ErrNotFound
 }
 
 func (i *InMemoryTodoStore) GetAllTodos() []model.Todo {
