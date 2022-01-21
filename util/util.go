@@ -33,7 +33,7 @@ func AssertStatusCode(t *testing.T, got, want int) {
 	}
 }
 
-func NewPostTodoReq(t *testing.T, url string, todo *model.Todo) *http.Request {
+func NewPostReq(t *testing.T, url string, todo *model.Todo) *http.Request {
 	t.Helper()
 	buf, err := json.Marshal(todo)
 	if err != nil {
@@ -41,5 +41,11 @@ func NewPostTodoReq(t *testing.T, url string, todo *model.Todo) *http.Request {
 	}
 
 	req, _ := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(buf))
+	return req
+}
+
+func NewGetTodoReq(t *testing.T, url string) *http.Request {
+	t.Helper()
+	req, _ := http.NewRequest(http.MethodGet, url, nil)
 	return req
 }
