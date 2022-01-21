@@ -18,9 +18,9 @@ type TodoStore interface {
 	DeleteById(id int) (int, error)
 }
 
-func NewInMemoryTodoStore() *InMemoryTodoStore {
+func NewInMemoryTodoStore() InMemoryTodoStore {
 	todos := make(map[int]model.Todo, 0)
-	return &InMemoryTodoStore{
+	return InMemoryTodoStore{
 		todos: todos,
 	}
 }

@@ -9,8 +9,8 @@ type StubTodoStore struct {
 	todos map[int]model.Todo
 }
 
-func NewStubTodoStore(todos *map[int]model.Todo) *StubTodoStore {
-	return &StubTodoStore{todos: *todos}
+func NewStubTodoStore(todos *map[int]model.Todo) StubTodoStore {
+	return StubTodoStore{todos: *todos}
 }
 
 func (s *StubTodoStore) GetTodoById(id int) (*model.Todo, error) {

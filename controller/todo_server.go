@@ -11,26 +11,31 @@ import (
 )
 
 type TodoServer struct {
-	Store database.TodoStore
+	Store  database.TodoStore
+	router *http.ServeMux
 }
 
 func NewTodoServer(todoStore database.TodoStore) *TodoServer {
-	return &TodoServer{todoStore}
+	server := &TodoServer{
+		todoStore,
+		http.NewServeMux(),
+	}
+
+	server.router.Handle("/api/todos", http.HandlerFunc(server.todosHandler))
+	return server
 }
 
 func (t *TodoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	router := http.NewServeMux()
+	t.router.ServeHTTP(w, r)
+}
 
-	router.Handle("/api/todos", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case http.MethodPost:
-			t.todoCreation(w, r)
-		case http.MethodGet:
-			t.getAllTodos(w, r)
-		}
-	}))
-
-	router.ServeHTTP(w, r)
+func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodPost:
+		t.todoCreation(w, r)
+	case http.MethodGet:
+		t.getAllTodos(w, r)
+	}
 }
 
 // func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
