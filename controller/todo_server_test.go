@@ -11,6 +11,7 @@ import (
 	"todo-app-go.com/v1/controller"
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/model"
+	"todo-app-go.com/v1/util"
 )
 
 func TestGetAll(t *testing.T) {
@@ -40,6 +41,8 @@ func TestGetAll(t *testing.T) {
 		}
 
 		assert.Equal(t, res.Code, http.StatusOK)
+
+		util.SortTodoSliceById(got)
 
 		if !reflect.DeepEqual(got, wantedTodos) {
 			t.Errorf("got %v but want %v", got, wantedTodos)
