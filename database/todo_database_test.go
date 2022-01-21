@@ -138,10 +138,10 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, todo.Id, got)
 	})
 
-	// t.Run("update not existing todo", func(t *testing.T) {
-	// 	todoUpdated := models.NewTodo(4, "Updated text", false)
-	// 	err := todoManager.Update(todoUpdated)
+	t.Run("update not existing todo", func(t *testing.T) {
+		todo := model.NewTodo(4, "UpdatedTodo", true)
+		_, err := store.UpdateTodo(todo)
 
-	// 	utils.AssertError(t, err, ErrTodoNotFound)
-	// })
+		assert.IsType(t, error_handler.ErrNotFound, err)
+	})
 }
