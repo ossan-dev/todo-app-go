@@ -148,23 +148,23 @@ func TestUpdate(t *testing.T) {
 	})
 }
 
-// func TestDelete(t *testing.T) {
-// 	todos := []models.Todo{
-// 		models.NewTodo(1, "FirstTodo", false),
-// 		models.NewTodo(2, "SecondTodo", false),
-// 		models.NewTodo(3, "ThirdTodo", true),
-// 	}
+func TestDelete(t *testing.T) {
+	todos := []model.Todo{
+		model.NewTodo(1, "FirstTodo", false),
+	}
+	store := database.NewStubTodoStore(
+		&map[int]model.Todo{
+			1: todos[0],
+		},
+	)
 
-// 	todoManager := &TodoManager{todos}
+	t.Run("delete todo", func(t *testing.T) {
+		deletedRows := store.DeleteById(1)
+		assert.Equal(t, 1, deletedRows)
+	})
 
-// 	t.Run("delete todo", func(t *testing.T) {
-// 		todoManager.DeleteById(2)
-// 		_, err := todoManager.GetById(2)
-// 		utils.AssertError(t, err, ErrTodoNotFound)
-// 	})
-
-// 	t.Run("not delete todo if not exists", func(t *testing.T) {
-// 		err := todoManager.DeleteById(4)
-// 		utils.AssertError(t, err, ErrTodoNotFound)
-// 	})
-// }
+	// t.Run("not delete todo if not exists", func(t *testing.T) {
+	// 	err := todoManager.DeleteById(4)
+	// 	utils.AssertError(t, err, ErrTodoNotFound)
+	// })
+}
