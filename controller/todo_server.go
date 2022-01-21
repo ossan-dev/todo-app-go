@@ -22,8 +22,8 @@ func NewTodoServer(todoStore database.TodoStore) *TodoServer {
 	controller := &TodoController{todoStore}
 
 	router.HandleFunc("/api/todos", controller.AddTodo).Methods(http.MethodPost)
+	router.HandleFunc("/api/todos", controller.GetAllTodos).Methods(http.MethodGet)
 	router.HandleFunc("/api/todos/{id:[0-9]+}", controller.GetTodoById).Methods(http.MethodGet)
-	router.HandleFunc("/api/custom-todos", controller.GetAllTodos).Methods(http.MethodGet)
 
 	server.Handler = router
 
