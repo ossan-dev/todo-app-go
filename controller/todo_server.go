@@ -28,6 +28,7 @@ func NewTodoServer(todoStore database.TodoStore) *TodoServer {
 }
 
 func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
 	json.NewEncoder(w).Encode(t.todoStore.GetAllTodos())
 	w.WriteHeader(http.StatusOK)
 }
