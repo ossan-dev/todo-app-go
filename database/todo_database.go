@@ -1,6 +1,9 @@
 package database
 
-import "todo-app-go.com/v1/model"
+import (
+	"todo-app-go.com/v1/error_handler"
+	"todo-app-go.com/v1/model"
+)
 
 type InMemoryTodoStore struct {
 	todos map[int]model.Todo
@@ -11,6 +14,7 @@ type TodoStore interface {
 	GetAllTodos() []model.Todo
 	GetByStatus(status bool) []model.Todo
 	AddTodo(todo model.Todo) (int, error)
+	UpdateTodo(todo model.Todo) (*int, error)
 }
 
 func NewInMemoryTodoStore() *InMemoryTodoStore {
@@ -42,4 +46,14 @@ func (i *InMemoryTodoStore) AddTodo(todo model.Todo) (int, error) {
 
 	i.todos[maxKey+1] = todo
 	return 1, nil
+}
+
+func (i *InMemoryTodoStore) UpdateTodo(todo model.Todo) (*int, error) {
+	for key, val := range i.todos {
+		if val.Id == todo.Id {
+			i.todos[key] = val
+			return &todo.Id, nil
+		}
+	}
+	return nil, error_handler.ErrNotFound
 }
