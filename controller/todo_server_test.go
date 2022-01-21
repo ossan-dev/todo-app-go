@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,15 +14,19 @@ import (
 )
 
 func TestGetAll(t *testing.T) {
-	todo := model.NewTodo(1, "FirstTodo", false)
+	wantedTodos := []model.Todo{
+		model.NewTodo(1, "FirstTodo", false),
+		model.NewTodo(2, "SecondTodo", false),
+	}
 	store := database.NewStubTodoStore(
 		&map[int]model.Todo{
-			1: todo,
+			1: wantedTodos[0],
+			2: wantedTodos[1],
 		},
 	)
 	server := controller.NewTodoServer(&store)
 
-	t.Run("it returns 200 on /api/todos", func(t *testing.T) {
+	t.Run("it todos as JSON", func(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodGet, "/api/todos", nil)
 		res := httptest.NewRecorder()
 
@@ -35,5 +40,9 @@ func TestGetAll(t *testing.T) {
 		}
 
 		assert.Equal(t, res.Code, http.StatusOK)
+
+		if !reflect.DeepEqual(got, wantedTodos) {
+			t.Errorf("got %v but want %v", got, wantedTodos)
+		}
 	})
 }
