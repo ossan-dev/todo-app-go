@@ -1,6 +1,9 @@
 package util
 
 import (
+	"bytes"
+	"encoding/json"
+	"net/http"
 	"sort"
 	"testing"
 
@@ -28,4 +31,15 @@ func AssertStatusCode(t *testing.T, got, want int) {
 	if got != want {
 		t.Errorf("got %d but want %d", got, want)
 	}
+}
+
+func NewPostTodoReq(t *testing.T, url string, todo *model.Todo) *http.Request {
+	t.Helper()
+	buf, err := json.Marshal(todo)
+	if err != nil {
+		t.Fatalf("could not serialize model %v, err %v", todo, err)
+	}
+
+	req, _ := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(buf))
+	return req
 }

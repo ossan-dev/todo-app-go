@@ -1,8 +1,6 @@
 package controller_test
 
 import (
-	"bytes"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -11,6 +9,7 @@ import (
 	"todo-app-go.com/v1/controller"
 	"todo-app-go.com/v1/database"
 	"todo-app-go.com/v1/model"
+	"todo-app-go.com/v1/util"
 )
 
 func TestSavingTodosAndRetrievingThem(t *testing.T) {
@@ -21,18 +20,7 @@ func TestSavingTodosAndRetrievingThem(t *testing.T) {
 	}
 
 	res := httptest.NewRecorder()
-	server.ServeHTTP(res, newPostTodoReq(t, &wantedTodos[0]))
+	server.ServeHTTP(res, util.NewPostTodoReq(t, "/api/todos", &wantedTodos[0]))
 
 	assert.Equal(t, http.StatusCreated, res.Code)
-}
-
-func newPostTodoReq(t *testing.T, todo *model.Todo) *http.Request {
-	t.Helper()
-	buf, err := json.Marshal(todo)
-	if err != nil {
-		t.Fatalf("could not serialize model %v, err %v", todo, err)
-	}
-
-	req, _ := http.NewRequest(http.MethodPost, "/api/todos", bytes.NewBuffer(buf))
-	return req
 }
