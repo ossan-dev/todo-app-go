@@ -1,6 +1,7 @@
 package controller_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -44,5 +45,22 @@ func TestGetAll(t *testing.T) {
 		assert.Equal(t, wantedTodos, got)
 
 		assert.Equal(t, util.JsonContentType, res.Result().Header.Get("content-type"))
+	})
+}
+
+func TestAdd(t *testing.T) {
+	todo := "invalid todo"
+	store := database.NewStubTodoStore(
+		&map[int]model.Todo{},
+	)
+	server := controller.NewTodoServer(&store)
+
+	t.Run("invalid json format should return 400", func(t *testing.T) {
+		req, _ := http.NewRequest(http.MethodPost, "/api/todos", bytes.NewBuffer([]byte(todo)))
+		res := httptest.NewRecorder()
+
+		server.ServeHTTP(res, req)
+
+		assert.Equal(t, http.StatusBadRequest, res.Code)
 	})
 }
