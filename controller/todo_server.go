@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"todo-app-go.com/v1/database"
@@ -34,7 +35,10 @@ func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	case http.MethodPost:
 		var todo model.Todo
-		json.NewDecoder(r.Body).Decode(&todo)
+		err := json.NewDecoder(r.Body).Decode(&todo)
+		if err != nil {
+			panic(fmt.Sprintf("invalid json data, err: %v", err))
+		}
 		t.todoStore.AddTodo(todo)
 		w.WriteHeader(http.StatusCreated)
 	}
