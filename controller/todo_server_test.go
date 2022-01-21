@@ -1,6 +1,7 @@
 package controller_test
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -25,6 +26,13 @@ func TestGetAll(t *testing.T) {
 		res := httptest.NewRecorder()
 
 		server.ServeHTTP(res, req)
+
+		var got []model.Todo
+
+		err := json.NewDecoder(res.Body).Decode(&got)
+		if err != nil {
+			t.Fatalf("Unable to parse response from server %q into slice of Todo, %v", res.Body, err)
+		}
 
 		assert.Equal(t, res.Code, http.StatusOK)
 	})
