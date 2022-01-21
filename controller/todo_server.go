@@ -28,12 +28,8 @@ func NewTodoServer(todoStore database.TodoStore) *TodoServer {
 }
 
 func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodPost:
-		t.todoCreation(w, r)
-	case http.MethodGet:
-		t.getAllTodos(w, r)
-	}
+	json.NewEncoder(w).Encode(t.getAllTodos())
+	w.WriteHeader(http.StatusOK)
 }
 
 // func (t *TodoServer) showDescription(w http.ResponseWriter, todoId int) {
@@ -45,15 +41,11 @@ func (t *TodoServer) todosHandler(w http.ResponseWriter, r *http.Request) {
 // 	fmt.Fprintf(w, "%v", todo)
 // }
 
-func (t *TodoServer) getAllTodos(w http.ResponseWriter, r *http.Request) {
-	todos := []model.Todo{
+func (t *TodoServer) getAllTodos() []model.Todo {
+	return []model.Todo{
 		model.NewTodo(1, "First Todo", false),
 		model.NewTodo(2, "Second Todo", true),
 	}
-
-	json.NewEncoder(w).Encode(todos)
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func (t *TodoServer) todoCreation(w http.ResponseWriter, r *http.Request) {
